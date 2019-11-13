@@ -31,68 +31,34 @@ const App = () => {
     await register({ variables: { token: token } })
   }
 
-  // const fetchSubscriptions = async () => {
-  //   let url = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet%2CcontentDetails&maxResults=50&key=${API_KEY}&mine=true`
-  //   const headers = {
-  //     'Authorization': 'Bearer ' + loggedUser.Zi.access_token,
-  //     'Accept': 'application/json'
-  //   }
-  //   let token = null
-
-  //   if (token) {
-  //     url = url + '&pageToken=' + token
-  //   }
-
-  //   const fetchAllPages = () => {
-  //     fetch(url, {headers: headers})
-  //       .then(res => res.json())
-  //       .then(res => {
-  //         // if (res.nextPageToken && subscriptions.length < 150) {
-  //         //   setSubscriptions(subs => [...subs, ...res.items])
-  //         //   token = res.nextPageToken
-  //         //   console.log(res)
-  //         //   return fetchAllPages()
-  //         // } else {
-  //           if (res.items) {
-  //             return setSubscriptions(subs => [...subs, ...res.items])
-  //           } else {
-  //             console.log('no youtube subscriptions on this account')
-  //           }
-  //         // }
-  //       })
-  //   }
-
-  //   await fetchAllPages()
-  // }
-
   const getSubscriptions = async () => {
-    let baseUrl = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet%2CcontentDetails&maxResults=50&mine=true&key=${API_KEY}`
+    await fetchAllSubscriptions(null)
+  }
+
+  const fetchAllSubscriptions = (token) => {
+    const baseUrl = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet%2CcontentDetails&maxResults=50&mine=true&key=${API_KEY}`
     const headers = {
       'Authorization': 'Bearer ' + loggedUser.Zi.access_token,
       'Accept': 'application/json'
     }
+    const fetchUrl = token ? `${baseUrl}&pageToken=${token}` : baseUrl
 
-    const fetchSubs = (token) => {
-      let fetchUrl = token ? `${baseUrl}&pageToken=${token}` : baseUrl
-
-      return fetch(fetchUrl, { headers: headers })
-        .then(res => res.json())
-        .then(data => {
-          if (data.items.length > 0) {
-            if (!data.nextPageToken) {
-              return setSubscriptions(subs => [...subs, ...data.items])
-            } else {
-              setSubscriptions(subs => [...subs, ...data.items])
-              fetchSubs(data.nextPageToken)
-            }
+    return fetch(fetchUrl, { headers: headers })
+      .then(res => res.json())
+      .then(data => {
+        if (data.items && data.items.length > 0) {
+          if (!data.nextPageToken) {
+            setSubscriptions(subs => [...subs, ...data.items])
+            console.log('all subscriptions have been fetched')
           } else {
-            console.log('this account is not subscribed to any youtube channel')
+            setSubscriptions(subs => [...subs, ...data.items])
+            fetchAllSubscriptions(data.nextPageToken)
           }
-        })
-        .catch(err => console.error(err))
-    }
-
-    await fetchSubs(null)
+        } else {
+          console.log('this account is not subscribed to any youtube channel')
+        }
+      })
+      .catch(err => console.error(err))
   }
 
   return (
