@@ -1,5 +1,10 @@
 require('dotenv').config()
-const { ApolloServer, gql } = require('apollo-server')
+const { 
+  ApolloServer, 
+  gql, 
+  AuthenticationError,
+  ApolloError
+} = require('apollo-server')
 const { OAuth2Client } = require('google-auth-library')
 const mongoose = require('mongoose')
 
@@ -10,17 +15,17 @@ const User = require('./models/user')
 const client = new OAuth2Client(process.env.CLIENT_ID)
 
 const typeDefs = gql`
+  type User {
+    name: String
+    email: String
+    sub: String
+  }
   type Query {
     sayHi: String
     getUsers: [User]
   }
   type Mutation {
-    register(token: String!): String
-  }
-  type User {
-    name: String
-    email: String
-    sub: String
+    register(token: String!): User
   }
 `
 
@@ -32,28 +37,34 @@ const resolvers = {
         const dogs = await User.find()
         return dogs
       } catch(err) {
-        return err.message
+        throw new ApolloError(err.message)
       }
     }
   },
   Mutation: {
     register: async (_, { token }) => {
-      const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: process.env.CLIENT_ID
-      })
-      const { email, name, sub } = ticket.getPayload()
+      try {
+        // decode user token and verify if its provided by an official google services
+        const ticket = await client.verifyIdToken({
+          idToken: token,
+          audience: process.env.CLIENT_ID
+        })
+        const { email, name, sub } = ticket.getPayload()
+    
+        // check if user already exists in the database
+        const foundUser = await User.findOne({ sub: sub })
 
-      await User.findOne({ sub: sub }, async (err, res) => {
-        if (err) return err.message
-        if (res) {
-          return 'A user for this google account has already been registered'
+        if (foundUser) {
+          throw new AuthenticationError('An User with this google account has already been registered')
         } else {
+          // if user doesn't already exist
+          // add him to the DB
           const newUser = new User({ email, name, sub })
-          await newUser.save()
-          return `${name}, ${email}, ${sub}`
+          const res = await newUser.save() 
+          // and return an object that matches graphql User Type
+          return { sub: res.sub, email: res.email, name: res.name }
         }
-      })
+      } catch(e) { throw new ApolloError(e.message) }
     }
   }
 }
