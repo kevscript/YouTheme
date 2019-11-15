@@ -71,6 +71,7 @@ const App = () => {
         scope={scope}
         discoveryDocs={discoveryUrl}
         cookiePolicy={'single_host_origin'}
+        isSignedIn
       />
       <GoogleLogout
         clientId={CLIENT_ID}
