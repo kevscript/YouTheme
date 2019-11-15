@@ -18,12 +18,18 @@ const App = () => {
 
   const [loggedUser, setLoggedUser] = useState(null)
   const [subscriptions, setSubscriptions] = useState([])
+  const [error, setError] = useState(null)
 
   const [register] = useMutation(REGISTER_USER)
 
-  const responseGoogle = (response) => {
+  const responseSuccess = (response) => {
     console.log(response);
     setLoggedUser(response)
+  }
+
+  const responseFailure = (response) => {
+    console.log(response)
+    setError(response)
   }
 
   const handleRegister = async () => {
@@ -66,8 +72,8 @@ const App = () => {
       <GoogleLogin
         clientId={CLIENT_ID}
         buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
+        onSuccess={responseSuccess}
+        onFailure={responseFailure}
         scope={scope}
         discoveryDocs={discoveryUrl}
         cookiePolicy={'single_host_origin'}
@@ -76,13 +82,14 @@ const App = () => {
       <GoogleLogout
         clientId={CLIENT_ID}
         buttonText="Logout"
-        onLogoutSuccess={responseGoogle}
+        onLogoutSuccess={responseSuccess}
       />
       <button onClick={getSubscriptions}>FETCH</button>
       <button onClick={handleRegister}>REGISTER</button>
 
       {!loggedUser && <h1>no user logged</h1>}
       {loggedUser && loggedUser.Zi.id_token}
+      {error && error}
     </div>
 
   );
