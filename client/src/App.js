@@ -2,15 +2,19 @@ import React, { useState } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login'
 import { CLIENT_ID, API_KEY } from './config'
 
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 
 const REGISTER_USER = gql`
   mutation RegisterUser($token: String!) {
-    register(token: $token)
+    register(token: $token) {
+      name
+      email
+      sub
+      createdAt
+    }
   }
 `
-
 
 const App = () => {
   const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
@@ -20,15 +24,18 @@ const App = () => {
   const [subscriptions, setSubscriptions] = useState([])
   const [error, setError] = useState(null)
 
-  const [register] = useMutation(REGISTER_USER)
+  const [register] = useMutation(REGISTER_USER, {
+    onCompleted: (data) => setLoggedUser(data)
+  })
 
-  const responseSuccess = (response) => {
-    console.log(response);
-    setLoggedUser(response)
+  const responseSuccess = async (response) => {
+    console.log('onsuccess', response)
+    await register({ variables: { token: response.tokenId } })
+    // setLoggedUser(response)
   }
 
   const responseFailure = (response) => {
-    console.log(response)
+    console.log('onfailure', response)
     setError(response)
   }
 
@@ -87,8 +94,8 @@ const App = () => {
       <button onClick={getSubscriptions}>FETCH</button>
       <button onClick={handleRegister}>REGISTER</button>
 
-      {!loggedUser && <h1>no user logged</h1>}
-      {loggedUser && loggedUser.Zi.id_token}
+      {/* {!loggedUser && <h1>no user logged</h1>}
+      {loggedUser && loggedUser.Zi.id_token} */}
       {error && error}
     </div>
 
