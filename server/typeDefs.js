@@ -5,6 +5,7 @@ module.exports = gql`
     name: String
     email: String
     sub: String
+    createdAt: String
   }
   type Query {
     sayHi: String

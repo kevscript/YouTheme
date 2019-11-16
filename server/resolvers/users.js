@@ -31,14 +31,16 @@ module.exports = {
         const foundUser = await User.findOne({ sub: sub })
 
         if (foundUser) {
-          throw new AuthenticationError('An User with this google account has already been registered')
+          // if user exists in the DB, return an object that matches graphql User Type
+          return { sub: foundUser.sub, email: foundUser.email, name: foundUser.name, createdAt: foundUser.createdAt }
         } else {
           // if user doesn't already exist
           // add him to the DB
-          const newUser = new User({ email, name, sub })
+          const createdAt = new Date().toISOString()
+          const newUser = new User({ email, name, sub, createdAt })
           const res = await newUser.save() 
           // and return an object that matches graphql User Type
-          return { sub: res.sub, email: res.email, name: res.name }
+          return { sub: res.sub, email: res.email, name: res.name, createdAt: res.createdAt }
         }
       } catch(e) { throw new ApolloError(e.message) }
     }
