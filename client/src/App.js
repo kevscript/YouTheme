@@ -23,6 +23,7 @@ const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
   const [subscriptions, setSubscriptions] = useState([])
   const [error, setError] = useState(null)
+  const [googleUser, setGoogleUser] = useState(null)
 
   const [register] = useMutation(REGISTER_USER, {
     onCompleted: (data) => setLoggedUser(data.register)
@@ -31,17 +32,12 @@ const App = () => {
   const responseSuccess = async (response) => {
     console.log('onsuccess', response)
     await register({ variables: { token: response.tokenId } })
-    // setLoggedUser(response)
+    setGoogleUser(response)
   }
 
   const responseFailure = (response) => {
     console.log('onfailure', response)
     setError(response)
-  }
-
-  const handleRegister = async () => {
-    const token = loggedUser.Zi.id_token
-    await register({ variables: { token: token } })
   }
 
   const getSubscriptions = async () => {
@@ -51,7 +47,7 @@ const App = () => {
   const fetchAllSubscriptions = (token) => {
     const baseUrl = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet%2CcontentDetails&maxResults=50&mine=true&key=${API_KEY}`
     const headers = {
-      'Authorization': 'Bearer ' + loggedUser.Zi.access_token,
+      'Authorization': 'Bearer ' + googleUser.Zi.access_token,
       'Accept': 'application/json'
     }
     const fetchUrl = token ? `${baseUrl}&pageToken=${token}` : baseUrl
@@ -92,10 +88,8 @@ const App = () => {
         onLogoutSuccess={responseSuccess}
       />
       <button onClick={getSubscriptions}>FETCH</button>
-      <button onClick={handleRegister}>REGISTER</button>
 
-      {/* {!loggedUser && <h1>no user logged</h1>}
-      {loggedUser && loggedUser.Zi.id_token} */}
+      <h3>{googleUser ? googleUser.Zi.id_token : 'no user logged'}</h3>
       {error && error}
     </div>
 
