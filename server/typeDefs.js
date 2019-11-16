@@ -10,6 +10,7 @@ module.exports = gql`
   type Query {
     sayHi: String
     getUsers: [User]
+    getUser(id: String!): User
   }
   type Mutation {
     register(token: String!): User

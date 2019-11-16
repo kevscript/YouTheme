@@ -15,6 +15,16 @@ module.exports = {
       } catch(err) {
         throw new ApolloError(err.message)
       }
+    },
+    getUser: async (_, { id }) => {
+      try {
+        const foundUser = await User.findOne({ sub: id })
+        if (foundUser) {
+          return foundUser
+        } else {
+          throw new ApolloError('No user with this id found in the DB')
+        }
+      } catch(e) { throw new ApolloError(e.message) }
     }
   },
   Mutation: {
