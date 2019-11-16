@@ -10,7 +10,7 @@ const REGISTER_USER = gql`
     register(token: $token) {
       name
       email
-      sub
+      id
       createdAt
     }
   }
@@ -25,7 +25,7 @@ const App = () => {
   const [error, setError] = useState(null)
 
   const [register] = useMutation(REGISTER_USER, {
-    onCompleted: (data) => setLoggedUser(data)
+    onCompleted: (data) => setLoggedUser(data.register)
   })
 
   const responseSuccess = async (response) => {

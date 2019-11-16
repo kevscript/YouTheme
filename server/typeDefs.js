@@ -4,7 +4,7 @@ module.exports = gql`
   type User {
     name: String
     email: String
-    sub: String
+    id: String
     createdAt: String
   }
   type Query {
