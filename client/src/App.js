@@ -29,13 +29,18 @@ const App = () => {
     onCompleted: (data) => setLoggedUser(data.register)
   })
 
-  const responseSuccess = async (response) => {
+  const loginSuccess = async (response) => {
     console.log('onsuccess', response)
     await register({ variables: { token: response.tokenId } })
     setGoogleUser(response)
   }
 
-  const responseFailure = (response) => {
+  const logoutSuccess = (response) => {
+    console.log(response)
+    setGoogleUser(null)
+  }
+
+  const loginFailure = (response) => {
     console.log('onfailure', response)
     setError(response)
   }
@@ -72,21 +77,25 @@ const App = () => {
 
   return (
     <div>
-      <GoogleLogin
-        clientId={CLIENT_ID}
-        buttonText="Login"
-        onSuccess={responseSuccess}
-        onFailure={responseFailure}
-        scope={scope}
-        discoveryDocs={discoveryUrl}
-        cookiePolicy={'single_host_origin'}
-        isSignedIn
-      />
-      <GoogleLogout
-        clientId={CLIENT_ID}
-        buttonText="Logout"
-        onLogoutSuccess={responseSuccess}
-      />
+      {
+        googleUser 
+          ? <GoogleLogout
+              clientId={CLIENT_ID}
+              buttonText="Logout"
+              onLogoutSuccess={logoutSuccess}
+            /> 
+          : <GoogleLogin
+              clientId={CLIENT_ID}
+              buttonText="Login"
+              onSuccess={loginSuccess}
+              onFailure={loginFailure}
+              scope={scope}
+              discoveryDocs={discoveryUrl}
+              cookiePolicy={'single_host_origin'}
+              isSignedIn
+            />
+      }
+    
       <button onClick={getSubscriptions}>FETCH</button>
 
       <h3>{googleUser ? googleUser.Zi.id_token : 'no user logged'}</h3>
