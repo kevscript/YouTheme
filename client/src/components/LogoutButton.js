@@ -12,7 +12,7 @@ const LogoutButton = ({ onLogoutSuccess }) => {
 
   return (
     <button onClick={signOut}>
-      Google Logout
+      Logout
     </button>
   )
 }
