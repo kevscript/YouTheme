@@ -1,6 +1,8 @@
 import React from 'react'
-import { GoogleLogin } from 'react-google-login'
+// import { GoogleLogin } from 'react-google-login'
 import { CLIENT_ID } from '../config'
+
+import LoginButton from '../components/LoginButton'
 
 const LoginPage = ({handleLogin}) => {
   const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
@@ -18,9 +20,8 @@ const LoginPage = ({handleLogin}) => {
 
   return (
     <div>
-      <GoogleLogin
+      <LoginButton
         clientId={CLIENT_ID}
-        buttonText="Login"
         onSuccess={loginSuccess}
         onFailure={loginFailure}
         scope={scope}
