@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react'
 
 const LoginButton = (props) => {
-  const {
-    clientId,
-    cookiePolicy,
-    loginHint,
-    hostedDomain,
-    autoLoad,
-    isSignedIn,
-    fetchBasicProfile,
-    redirectUri,
-    discoveryDocs,
-    onFailure,
-    uxMode,
-    scope,
-    accessType
-  } = props
 
   useEffect(() => {
+    const {
+      clientId,
+      cookiePolicy,
+      loginHint,
+      hostedDomain,
+      autoLoad,
+      isSignedIn,
+      fetchBasicProfile,
+      redirectUri,
+      discoveryDocs,
+      onFailure,
+      uxMode,
+      scope,
+      accessType
+    } = props
 
     const params = {
       client_id: clientId,
@@ -46,7 +46,7 @@ const LoginButton = (props) => {
       }
     })
 
-  }, [])
+  })
 
   const signIn = () => {
     const auth2 = window.gapi.auth2.getAuthInstance()
