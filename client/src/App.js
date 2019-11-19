@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import GlobalStyle from './styles/global'
 
 import PrivateRoute from './PrivateRoute'
 import LoginPage from './pages/LoginPage'
@@ -14,7 +15,7 @@ const App = () => {
 
   return (
     <div>
-      App
+      <GlobalStyle />
       <Router>
         <Route exact path="/login">
           {googleUser ? <Redirect to='/' /> : <LoginPage handleLogin={setGoogleUser} />}
