@@ -1,25 +1,19 @@
 import React from 'react'
-import { GoogleLogout } from 'react-google-login'
 import { Link } from 'react-router-dom'
-
+import LogoutButton from '../components/LogoutButton'
 import { CLIENT_ID } from '../config'
-import EditPage from './EditPage'
 
 const MainPage = ({handleLogout}) => {
 
   const logoutSuccess = (response) => {
-    console.log('legout user respons', response)
+    console.log('logout response', response)
     handleLogout(null)
   }
 
   return (
     <div>
       Main Page
-      <GoogleLogout
-        clientId={CLIENT_ID}
-        buttonText="Logout"
-        onLogoutSuccess={logoutSuccess}
-      /> 
+      <LogoutButton clientId={CLIENT_ID} onLogoutSuccess={logoutSuccess} /> 
       <Link to="/edit">Edit</Link>
     </div>
   )
