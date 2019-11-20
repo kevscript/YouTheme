@@ -42,15 +42,29 @@ module.exports = {
 
         if (foundUser) {
           // if user exists in the DB, return an object that matches graphql User Type
-          return { id: foundUser.id, email: foundUser.email, name: foundUser.name, createdAt: foundUser.createdAt }
+          return { 
+            id: foundUser.id, 
+            email: foundUser.email, 
+            name: foundUser.name, 
+            createdAt: foundUser.createdAt, 
+            subscriptions: foundUser.subscriptions,
+            themes: foundUser.themes
+          }
         } else {
           // if user doesn't already exist
           // add him to the DB
           const createdAt = new Date().toISOString()
-          const newUser = new User({ email, name, id: sub, createdAt })
+          const newUser = new User({ email, name, id: sub, createdAt, subscriptions: [], themes: [] })
           const res = await newUser.save() 
           // and return an object that matches graphql User Type
-          return { id: res.id, email: res.email, name: res.name, createdAt: res.createdAt }
+          return { 
+            id: res.id, 
+            email: res.email, 
+            name: res.name, 
+            createdAt: res.createdAt, 
+            subscriptions: res.subscriptions, 
+            themes: res.themes
+          }
         }
       } catch(e) { throw new ApolloError(e.message) }
     }
