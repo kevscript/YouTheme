@@ -20,6 +20,35 @@ const REGISTER_USER = gql`
       email
       id
       createdAt
+      subscriptions {
+        kind
+        etag
+        id
+        snippet {
+          publishedAt
+          title
+          description
+          channelId
+          resourceId {
+            kind
+            channelId
+          }
+          thumbnails {
+            default
+            medium
+            high
+          }
+        }
+        contentDetails {
+          totalItemCount
+          newItemCount
+          activityType
+        }
+      }
+      themes {
+        name
+        id
+      }
     }
   }
 `
@@ -28,14 +57,27 @@ const App = () => {
   const [googleUser, setGoogleUser] = useState(null)
   const [authUser, setAuthUser] = useState(null)
   const [subscriptions, setSubscriptions] = useState([])
+  const [themes, setThemes] = useState([])
 
   const [register] = useMutation(REGISTER_USER, {
-    onCompleted: (data) => setAuthUser(data.register)
+    onCompleted: (data) => {
+      setAuthUser({
+        name: data.register.name,
+        email: data.register.email,
+        id: data.register.id,
+        createdAt: data.register.createdAt
+      })
+      setSubscriptions(data.register.subscriptions)
+      setThemes(data.register.themes)
+
+    }
   })
 
   const handleLogout = () => {
     setGoogleUser(null)
     setAuthUser(null)
+    setSubscriptions([])
+    setThemes([])
   }
 
   const getSubscriptions = async () => {
