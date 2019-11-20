@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 import LogoutButton from '../components/LogoutButton'
-import { CLIENT_ID } from '../config'
 
 const Container = styled.div`
   width: 100%;
@@ -49,17 +48,11 @@ const GridItem = styled(Link)`
 `
 
 const MainPage = ({handleLogout}) => {
-
-  const logoutSuccess = (response) => {
-    console.log('logout response', response)
-    handleLogout(null)
-  }
-
   return (
     <Container>
       <Header>
         <SideElement>
-          <LogoutButton clientId={CLIENT_ID} onLogoutSuccess={logoutSuccess} /> 
+          <LogoutButton onLogoutSuccess={handleLogout} /> 
         </SideElement>
         <PageName>Themes</PageName>
         <SideElement>

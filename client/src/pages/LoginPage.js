@@ -17,14 +17,15 @@ const Title = styled.h1`
   font-size: 50px;
 `
 
-const LoginPage = ({ handleLogin }) => {
+const LoginPage = ({ handleGoogleUser, handleAuthUser }) => {
   const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
   const scope = 'https://www.googleapis.com/auth/youtube.readonly'
 
-  const loginSuccess = async (response) => {
+  const loginSuccess = (response) => {
     console.log('onsuccess', response)
     // await register({ variables: { token: response.tokenId } })
-    handleLogin(response)
+    handleGoogleUser(response)
+    handleAuthUser({ variables: { token: response.tokenId } })
   }
 
   const loginFailure = (response) => {
