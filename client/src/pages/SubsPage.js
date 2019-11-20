@@ -29,7 +29,7 @@ const PageName = styled.h3`
   font-size: 26px;
 `
 
-const SubsPage = () => {
+const SubsPage = ({subscriptions, getSubscriptions}) => {
   return (
     <Container>
       <Header>
@@ -39,9 +39,11 @@ const SubsPage = () => {
           </Link>
           <PageName>Subscriptions</PageName>
         </PrevPage>
-        <button>Reload</button>
+        <button onClick={getSubscriptions}>Reload</button>
       </Header>
-      Subs Page
+      <ul>
+        {subscriptions && subscriptions.map(channel => <li>{channel.snippet.title}</li> )}
+      </ul>
     </Container>
   )
 }
