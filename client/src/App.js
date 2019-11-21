@@ -14,8 +14,8 @@ import FeedPage from './pages/FeedPage'
 import SubsPage from './pages/SubsPage'
 
 const REGISTER_USER = gql`
-  mutation RegisterUser($token: String!) {
-    register(token: $token) {
+  mutation RegisterUser($idToken: String!, $accessToken: String!) {
+    register(idToken: $idToken, accessToken: $accessToken) {
       name
       email
       id
@@ -34,9 +34,15 @@ const REGISTER_USER = gql`
             channelId
           }
           thumbnails {
-            default
-            medium
-            high
+            default {
+              url
+            }
+            medium {
+              url
+            }
+            high {
+              url
+            }
           }
         }
         contentDetails {

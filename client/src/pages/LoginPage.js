@@ -25,7 +25,12 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser }) => {
     console.log('onsuccess', response)
     // await register({ variables: { token: response.tokenId } })
     handleGoogleUser(response)
-    handleAuthUser({ variables: { token: response.tokenId } })
+    handleAuthUser({ 
+      variables: { 
+        idToken: response.tokenId,
+        accessToken: response.accessToken
+      } 
+    })
   }
 
   const loginFailure = (response) => {
