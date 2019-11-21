@@ -21,9 +21,15 @@ const userSchema = new Schema({
         },
         channelId: String,
         thumbnails: {
-          default: String,
-          medium: String,
-          high: String
+          default: {
+            url: String
+          },
+          medium: {
+            url: String
+          },
+          high: {
+            url: String
+          }
         }
       },
       contentDetails: {
