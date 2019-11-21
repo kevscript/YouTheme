@@ -52,25 +52,6 @@ module.exports = {
             themes: foundUser.themes
           }
         } else {
-          // const subscriptions = await fetchAllSubscriptions(accessToken, process.env.API_KEY, null, [])
-          // const createdAt = new Date().toISOString()
-          // const newUser = new User({ 
-          //   email, 
-          //   name, 
-          //   id: sub, 
-          //   createdAt, 
-          //   subscriptions: subscriptions,
-          //   themes: [] 
-          // })
-          // const res = await newUser.save() 
-          // return { 
-          //   id: res.id, 
-          //   email: res.email, 
-          //   name: res.name, 
-          //   createdAt: res.createdAt, 
-          //   subscriptions: res.subscriptions, 
-          //   themes: res.themes
-          // }
           const subsPromise = async () => {
             const subs = await fetchAllSubscriptions(accessToken, process.env.API_KEY, null, [])
             return subs
@@ -100,6 +81,18 @@ module.exports = {
             themes: res.themes
           }
         }
+      } catch(e) { throw new ApolloError(e.message) }
+    },
+    reloadSubs: async (_, { id, accessToken }) => {
+      try {
+        const subsPromise = async () => {
+          const subs = await fetchAllSubscriptions(accessToken, process.env.API_KEY, null, [])
+          return subs
+        }
+        let newSubs
+        await subsPromise().then(subs => newSubs = subs)
+        await User.updateOne({id: id}, { $set: {subscriptions: newSubs} })
+          .then(() => console.log('updated'))
       } catch(e) { throw new ApolloError(e.message) }
     }
   }
