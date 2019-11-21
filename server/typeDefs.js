@@ -52,6 +52,6 @@ module.exports = gql`
   }
   type Mutation {
     register(idToken: String!, accessToken: String!): User
-    reloadSubs(id: String!, accessToken: String!): User
+    reloadSubs(id: String!, accessToken: String!): [Subscription]
   }
 `

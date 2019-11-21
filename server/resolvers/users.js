@@ -93,6 +93,7 @@ module.exports = {
         await subsPromise().then(subs => newSubs = subs)
         await User.updateOne({id: id}, { $set: {subscriptions: newSubs} })
           .then(() => console.log('updated'))
+        return newSubs
       } catch(e) { throw new ApolloError(e.message) }
     }
   }
