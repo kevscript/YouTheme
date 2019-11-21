@@ -59,6 +59,42 @@ const REGISTER_USER = gql`
   }
 `
 
+const RELOAD_SUBS = gql`
+  mutation ReloadSubs($id: String!, $accessToken: String!) {
+    reloadSubs(id: $id, accessToken: $accessToken) {
+      kind
+      etag
+      id
+      snippet {
+        publishedAt
+        title
+        description
+        channelId
+        resourceId {
+          kind
+          channelId
+        }
+        thumbnails {
+          default {
+            url
+          }
+          medium {
+            url
+          }
+          high {
+            url
+          }
+        }
+      }
+      contentDetails {
+        totalItemCount
+        newItemCount
+        activityType
+      }
+    }
+  }
+`
+
 const App = () => {
   const [googleUser, setGoogleUser] = useState(null)
   const [authUser, setAuthUser] = useState(null)
@@ -77,6 +113,14 @@ const App = () => {
       setThemes(data.register.themes)
 
     }
+  })
+
+  const [reloadSubs] = useMutation(RELOAD_SUBS, {
+    variables: { 
+      id: authUser? authUser.id : null, 
+      accessToken: googleUser ? googleUser.accessToken : null 
+    },
+    onCompleted: (data) => setSubscriptions(data.reloadSubs)
   })
 
   const handleLogout = () => {
@@ -146,7 +190,7 @@ const App = () => {
         <PrivateRoute 
           exact path="/subscriptions" 
           user={authUser} 
-          component={() => <SubsPage subscriptions={subscriptions} getSubscriptions={getSubscriptions} />} 
+          component={() => <SubsPage subscriptions={subscriptions} handleReload={reloadSubs} />} 
         />
       </Router>
     </div>
