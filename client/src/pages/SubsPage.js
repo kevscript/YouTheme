@@ -42,7 +42,7 @@ const SubsPage = ({subscriptions, getSubscriptions}) => {
         <button onClick={getSubscriptions}>Reload</button>
       </Header>
       <ul>
-        {subscriptions && subscriptions.map(channel => <li>{channel.snippet.title}</li> )}
+        {subscriptions && subscriptions.map(channel => <li key={channel.id}>{channel.snippet.title}</li> )}
       </ul>
     </Container>
   )
