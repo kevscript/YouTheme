@@ -38,9 +38,12 @@ module.exports = gql`
     channelId: String
   }
   type Thumbnails {
-    default: String
-    medium: String
-    high: String
+    default: Thumbnail
+    medium: Thumbnail
+    high: Thumbnail
+  }
+  type Thumbnail {
+    url: String
   }
   type Query {
     sayHi: String
@@ -48,6 +51,6 @@ module.exports = gql`
     getUser(id: String!): User
   }
   type Mutation {
-    register(token: String!): User
+    register(idToken: String!, accessToken: String!): User
   }
 `
