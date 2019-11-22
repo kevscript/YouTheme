@@ -121,6 +121,22 @@ module.exports = {
         await User.updateOne({id: id}, { $push: { themes: newTheme} })
         return newTheme
       } catch(e) { throw new ApolloError(e.message) }
+    },
+    deleteTheme: async (_, { id, themeId }) => {
+      try {
+        await User.updateOne({id: id}, { $pull: { themes: {id: themeId} } })
+        return themeId
+      } catch(e) { throw new ApolloError(e.message) }
+    },
+    editThemeName: async (_, { id, themeId, newName }) => {
+      try {
+        await User.updateOne({ id: id, 'themes.id': themeId }, { $set: { "themes.$.name": newName } })
+        const res = await User.findOne({ id: id, themes: {$elemMatch: {id: themeId}} }, {'themes.$.id': themeId })
+        return {
+          name: res.themes[0].name,
+          id: res.themes[0].id
+        }
+      } catch(e) { throw new ApolloError(e.message) }
     }
   }
 }
