@@ -26,6 +26,26 @@ module.exports = {
           throw new ApolloError('No user with this id found in the DB')
         }
       } catch(e) { throw new ApolloError(e.message) }
+    },
+    getThemes: async (_, { id }) => {
+      try {
+        const foundUser = await User.findOne({ id: id })
+        if (foundUser) {
+          return foundUser.themes
+        } else {
+          throw new ApolloError('No user with this id found in the DB')
+        }
+      } catch(e) { throw new ApolloError(e.message) }
+    },
+    getSubs: async (_, { id }) => {
+      try {
+        const foundUser = await User.findOne({ id: id })
+        if (foundUser) {
+          return foundUser.subscriptions
+        } else {
+          throw new ApolloError('No user with this id found in the DB')
+        }
+      } catch(e) { throw new ApolloError(e.message) }
     }
   },
   Mutation: {
@@ -93,6 +113,13 @@ module.exports = {
         await subsPromise().then(subs => newSubs = subs)
         await User.updateOne({id: id}, { $set: {subscriptions: newSubs} })
         return newSubs
+      } catch(e) { throw new ApolloError(e.message) }
+    },
+    createTheme: async (_, { id, themeName }) => {
+      try {
+        const newTheme = { name: themeName, id: Date.now().toString() }
+        await User.updateOne({id: id}, { $push: { themes: newTheme} })
+        return newTheme
       } catch(e) { throw new ApolloError(e.message) }
     }
   }

@@ -49,9 +49,12 @@ module.exports = gql`
     sayHi: String
     getUsers: [User]
     getUser(id: String!): User
+    getThemes(id: String!): [Theme]
+    getSubs(id: String!): [Subscription]
   }
   type Mutation {
     register(idToken: String!, accessToken: String!): User
     reloadSubs(id: String!, accessToken: String!): [Subscription]
+    createTheme(id: String!, themeName: String!): Theme
   }
 `
