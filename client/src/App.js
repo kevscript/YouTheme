@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-
-import { API_KEY } from './config'
+import { REGISTER_USER, CREATE_THEME, RELOAD_SUBS } from './graphql/mutations'
 
 import GlobalStyle from './styles/global'
 import PrivateRoute from './PrivateRoute'
@@ -13,93 +11,15 @@ import EditPage from './pages/EditPage'
 import FeedPage from './pages/FeedPage'
 import SubsPage from './pages/SubsPage'
 
-const REGISTER_USER = gql`
-  mutation RegisterUser($idToken: String!, $accessToken: String!) {
-    register(idToken: $idToken, accessToken: $accessToken) {
-      name
-      email
-      id
-      createdAt
-      subscriptions {
-        kind
-        etag
-        id
-        snippet {
-          publishedAt
-          title
-          description
-          channelId
-          resourceId {
-            kind
-            channelId
-          }
-          thumbnails {
-            default {
-              url
-            }
-            medium {
-              url
-            }
-            high {
-              url
-            }
-          }
-        }
-        contentDetails {
-          totalItemCount
-          newItemCount
-          activityType
-        }
-      }
-      themes {
-        name
-        id
-      }
-    }
-  }
-`
-
-const RELOAD_SUBS = gql`
-  mutation ReloadSubs($id: String!, $accessToken: String!) {
-    reloadSubs(id: $id, accessToken: $accessToken) {
-      kind
-      etag
-      id
-      snippet {
-        publishedAt
-        title
-        description
-        channelId
-        resourceId {
-          kind
-          channelId
-        }
-        thumbnails {
-          default {
-            url
-          }
-          medium {
-            url
-          }
-          high {
-            url
-          }
-        }
-      }
-      contentDetails {
-        totalItemCount
-        newItemCount
-        activityType
-      }
-    }
-  }
-`
-
 const App = () => {
   const [googleUser, setGoogleUser] = useState(null)
   const [authUser, setAuthUser] = useState(null)
   const [subscriptions, setSubscriptions] = useState([])
   const [themes, setThemes] = useState([])
+
+  const [createTheme] = useMutation(CREATE_THEME, {
+    onCompleted: (data) => setThemes(t => [...t, data.createTheme])
+  })
 
   const [register] = useMutation(REGISTER_USER, {
     onCompleted: (data) => {
@@ -130,44 +50,17 @@ const App = () => {
     setThemes([])
   }
 
-  const getSubscriptions = async () => {
-    await fetchAllSubscriptions(null)
-  }
-
-  const fetchAllSubscriptions = (token) => {
-    const baseUrl = `https://www.googleapis.com/youtube/v3/subscriptions?part=snippet%2CcontentDetails&maxResults=50&mine=true&key=${API_KEY}`
-    const headers = {
-      'Authorization': 'Bearer ' + googleUser.Zi.access_token,
-      'Accept': 'application/json'
+  const handleThemeCreation = (themeName) => {
+    if (themeName) {
+      createTheme({ variables: { id: authUser.id, themeName }})
     }
-    const fetchUrl = token ? `${baseUrl}&pageToken=${token}` : baseUrl
-
-    return fetch(fetchUrl, { headers: headers })
-      .then(res => res.json())
-      .then(data => {
-        if (data.items && data.items.length > 0) {
-          if (!data.nextPageToken) {
-            setSubscriptions(subs => [...subs, ...data.items].sort((a, b) => {
-              return a.snippet.title.toLowerCase() > b.snippet.title.toLowerCase() ? 1 : -1
-            }))
-            console.log('all subscriptions have been fetched')
-          } else {
-            setSubscriptions(subs => [...subs, ...data.items].sort((a, b) => {
-              return a.snippet.title.toLowerCase() > b.snippet.title.toLowerCase() ? 1 : -1
-            }))
-            fetchAllSubscriptions(data.nextPageToken)
-          }
-        } else {
-          console.log('this account is not subscribed to any youtube channel')
-        }
-      })
-      .catch(err => console.error(err))
   }
 
   return (
     <div>
       <GlobalStyle />
       <Router>
+
         <Route exact path="/login">
           {
             authUser 
@@ -180,18 +73,31 @@ const App = () => {
                 />
           }
         </Route>
+
         <PrivateRoute 
           exact path="/" 
           user={authUser} 
           component={() => <MainPage handleLogout={handleLogout} />} 
         />
-        <PrivateRoute exact path="/edit" user={authUser} component={EditPage}/>
-        <PrivateRoute exact path="/feed" user={authUser} component={FeedPage} />
+
+        <PrivateRoute 
+          exact path="/edit" 
+          user={authUser} 
+          component={() => <EditPage themes={themes} handleThemeCreation={handleThemeCreation}/>}
+        />
+
+        <PrivateRoute 
+          exact path="/feed" 
+          user={authUser} 
+          component={FeedPage} 
+        />
+
         <PrivateRoute 
           exact path="/subscriptions" 
           user={authUser} 
           component={() => <SubsPage subscriptions={subscriptions} handleReload={reloadSubs} />} 
         />
+
       </Router>
     </div>
   )
