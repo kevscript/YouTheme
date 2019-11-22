@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -29,7 +29,26 @@ const PageName = styled.h3`
   font-size: 26px;
 `
 
-const EditPage = () => {
+const InputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Input = styled.input`
+  padding: 10px;
+  flex: 1;
+`
+
+const InputButton = styled.button`
+  padding: 10px;
+`
+
+const EditPage = ({ themes, handleThemeCreation }) => {
+
+  const [themeInput, setThemeInput] = useState('')
+
   return (
     <Container>
       <Header>
@@ -41,7 +60,13 @@ const EditPage = () => {
         </PrevPage>
         <Link to="/subscriptions">Subscriptions</Link>
       </Header>
-      Edit Page
+      <InputContainer>
+        <Input type="text" value={themeInput} onChange={e => setThemeInput(e.target.value)} placeholder="New theme name"/>
+        <InputButton onClick={() => handleThemeCreation(themeInput)}>Create Theme</InputButton>
+      </InputContainer>
+      <div>
+        {themes && themes.map(theme => <li key={theme.id}>{theme.name}</li>)}
+      </div>
     </Container>
   )
 }
