@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   html {
-    font-size: 16px;
+    font-size: 15px;
     color: #222;
   }
 
@@ -28,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
       monospace;
   }
-  ul {
+  ul, li {
     list-style: none;
   }
   pre {
