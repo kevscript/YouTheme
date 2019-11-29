@@ -85,11 +85,13 @@ const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
       <div>
         <InputContainer>
           <Input type="text" value={themeInput} onChange={e => setThemeInput(e.target.value)} placeholder="New theme name"/>
-          <InputButton onClick={() => handleThemeCreation(themeInput)}>Create Theme</InputButton>
+          <InputButton onClick={() => handleThemeCreation(themeInput)}>Create</InputButton>
         </InputContainer>
         <ThemesGrid>
-          <GridItem to="/feed">All Themes</GridItem>
-          {themes && themes.map(theme => <GridItem to="/feed" key={theme.id}>{theme.name}</GridItem>)}
+          <GridItem to={{ pathname: `/theme/all`, state: {themeName: 'All Themes'} }}>All Themes</GridItem>
+          {themes && themes.map(theme => 
+            <GridItem to={{ pathname: `/theme/${theme.id}`, state: {themeName: theme.name} }} key={theme.id}>{theme.name}</GridItem>
+          )}
         </ThemesGrid>
       </div>
     </Container>

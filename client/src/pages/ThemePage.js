@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
@@ -29,7 +29,10 @@ const PageName = styled.h3`
   font-size: 26px;
 `
 
-const ThemePage = () => {
+const ThemePage = (props) => {
+  const { themeId } = useParams()
+  const { themeName } = props.location.state
+
   return (
     <Container>
       <Header>
@@ -37,11 +40,11 @@ const ThemePage = () => {
           <Link to="/">
             <Icon icon={LeftIcon} name='back to menu arrow' />
           </Link>
-          <PageName>Theme</PageName>
+          <PageName>{themeName}</PageName>
         </PrevPage>
         <Link to="/edit">Edit</Link>
       </Header>
-      Theme Page
+      Theme Page id : {themeId}
     </Container>
   )
 }

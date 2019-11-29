@@ -87,7 +87,7 @@ const App = () => {
         />
 
         <PrivateRoute 
-          exact path="/feed" 
+          path="/theme/:themeId" 
           user={authUser} 
           component={ThemePage} 
         />
