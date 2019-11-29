@@ -8,8 +8,8 @@ import PrivateRoute from './PrivateRoute'
 import LoginPage from './pages/LoginPage'
 import MainPage from './pages/MainPage'
 import EditPage from './pages/EditPage'
-import FeedPage from './pages/FeedPage'
-import SubsPage from './pages/SubsPage'
+import ThemePage from './pages/ThemePage'
+import ChannelsPage from './pages/ChannelsPage'
 
 const App = () => {
   const [googleUser, setGoogleUser] = useState(null)
@@ -77,7 +77,7 @@ const App = () => {
         <PrivateRoute 
           exact path="/" 
           user={authUser} 
-          component={() => <MainPage handleLogout={handleLogout} />} 
+          component={() => <MainPage handleLogout={handleLogout} themes={themes} handleThemeCreation={handleThemeCreation}/>} 
         />
 
         <PrivateRoute 
@@ -89,13 +89,13 @@ const App = () => {
         <PrivateRoute 
           exact path="/feed" 
           user={authUser} 
-          component={FeedPage} 
+          component={ThemePage} 
         />
 
         <PrivateRoute 
-          exact path="/subscriptions" 
+          exact path="/channels" 
           user={authUser} 
-          component={() => <SubsPage subscriptions={subscriptions} handleReload={reloadSubs} />} 
+          component={() => <ChannelsPage subscriptions={subscriptions} handleReload={reloadSubs} />} 
         />
 
       </Router>

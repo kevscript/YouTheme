@@ -29,23 +29,21 @@ const PageName = styled.h3`
   font-size: 26px;
 `
 
-const SubsPage = ({subscriptions, handleReload}) => {
+const ThemePage = () => {
   return (
     <Container>
       <Header>
         <PrevPage>
-          <Link to="/edit">
-            <Icon icon={LeftIcon} name='back to edit page arrow' />
+          <Link to="/">
+            <Icon icon={LeftIcon} name='back to menu arrow' />
           </Link>
-          <PageName>Subscriptions</PageName>
+          <PageName>Theme</PageName>
         </PrevPage>
-        <button onClick={handleReload}>Reload</button>
+        <Link to="/edit">Edit</Link>
       </Header>
-      <ul>
-        {subscriptions && subscriptions.map(channel => <li key={channel.id}>{channel.snippet.title}</li> )}
-      </ul>
+      Theme Page
     </Container>
   )
 }
 
-export default SubsPage
+export default ThemePage

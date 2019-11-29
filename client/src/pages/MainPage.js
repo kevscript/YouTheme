@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
@@ -18,11 +18,13 @@ const Header = styled.div`
   padding: 0 5%;
 `
 
-const SideElement = styled.div`
-  width: 80px;
+const Menu = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+`
+
+const MenuItem = styled.li`
+  cursor: pointer;
+  margin: 0 0 0 10px;
 `
 
 const PageName = styled.h3`
@@ -47,21 +49,47 @@ const GridItem = styled(Link)`
   color: inherit;
 `
 
-const MainPage = ({handleLogout}) => {
+const InputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const Input = styled.input`
+  padding: 10px;
+  flex: 1;
+`
+
+const InputButton = styled.button`
+  padding: 10px;
+`
+
+const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
+
+  const [themeInput, setThemeInput] = useState('')
+
   return (
     <Container>
       <Header>
-        <SideElement>
-          <LogoutButton onLogoutSuccess={handleLogout} /> 
-        </SideElement>
-        <PageName>Themes</PageName>
-        <SideElement>
-          <Link to="/edit">Edit</Link>
-        </SideElement>
+        <PageName>Dashboard</PageName>
+        <Menu>
+          <MenuItem>
+            <Link to="/subscriptions">Channels</Link>
+          </MenuItem>
+          <MenuItem>
+            <LogoutButton onLogoutSuccess={handleLogout} /> 
+          </MenuItem>
+        </Menu>
       </Header>
       <div>
+        <InputContainer>
+          <Input type="text" value={themeInput} onChange={e => setThemeInput(e.target.value)} placeholder="New theme name"/>
+          <InputButton onClick={() => handleThemeCreation(themeInput)}>Create Theme</InputButton>
+        </InputContainer>
         <ThemesGrid>
           <GridItem to="/feed">All Themes</GridItem>
+          {themes && themes.map(theme => <GridItem to="/feed" key={theme.id}>{theme.name}</GridItem>)}
         </ThemesGrid>
       </div>
     </Container>
