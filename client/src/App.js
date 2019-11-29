@@ -9,7 +9,7 @@ import LoginPage from './pages/LoginPage'
 import MainPage from './pages/MainPage'
 import EditPage from './pages/EditPage'
 import ThemePage from './pages/ThemePage'
-import ChannelsPage from './pages/ChannelsPage'
+import SubsPage from './pages/SubsPage'
 
 const App = () => {
   const [googleUser, setGoogleUser] = useState(null)
@@ -93,9 +93,9 @@ const App = () => {
         />
 
         <PrivateRoute 
-          exact path="/channels" 
+          exact path="/subscriptions" 
           user={authUser} 
-          component={() => <ChannelsPage subscriptions={subscriptions} handleReload={reloadSubs} />} 
+          component={() => <SubsPage subscriptions={subscriptions} handleReload={reloadSubs} />} 
         />
 
       </Router>

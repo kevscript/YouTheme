@@ -29,15 +29,15 @@ const PageName = styled.h3`
   font-size: 26px;
 `
 
-const ChannelsPage = ({subscriptions, handleReload}) => {
+const SubsPage = ({subscriptions, handleReload}) => {
   return (
     <Container>
       <Header>
         <PrevPage>
-          <Link to="/edit">
-            <Icon icon={LeftIcon} name='back to edit page arrow' />
+          <Link to="/">
+            <Icon icon={LeftIcon} name='back to main page arrow' />
           </Link>
-          <PageName>Subscriptions</PageName>
+          <PageName>Subscribed Channels</PageName>
         </PrevPage>
         <button onClick={handleReload}>Reload</button>
       </Header>
@@ -48,4 +48,4 @@ const ChannelsPage = ({subscriptions, handleReload}) => {
   )
 }
 
-export default ChannelsPage
+export default SubsPage
