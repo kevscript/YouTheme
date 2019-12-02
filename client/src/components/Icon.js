@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 const IconContainer = styled.div`
   cursor: pointer;
-  width: 15px;
-  height: 15px;
+  width: ${props => props.width ? props.width : '15px'};
+  height: ${props => props.height ? props.height : '15px'};
   position: relative;
   display: flex;
   justify-content: center;
@@ -12,6 +12,8 @@ const IconContainer = styled.div`
   &:not(:last-child) {
     margin-right: 15px;
   }
+  border-radius: ${props => props.circle ? '50%' : '0'};
+  overflow: hidden;
 `
 
 const Img = styled.img`
@@ -20,9 +22,9 @@ const Img = styled.img`
   height: 100%;
 `
 
-const Icon = ({handleOnClick, icon, name}) => {
+const Icon = ({ handleOnClick, icon, name, width, height, circle }) => {
   return (
-    <IconContainer onClick={handleOnClick}>
+    <IconContainer onClick={handleOnClick} width={width} height={height} circle={circle}>
       <Img src={icon} alt={name} />
     </IconContainer>
   )
