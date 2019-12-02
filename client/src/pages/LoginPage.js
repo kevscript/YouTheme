@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { CLIENT_ID } from '../config'
 import LoginButton from '../components/LoginButton'
@@ -17,12 +17,20 @@ const Title = styled.h1`
   font-size: 50px;
 `
 
-const LoginPage = ({ handleGoogleUser, handleAuthUser }) => {
+const BtnContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+`
+
+const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadingMessage }) => {
   const discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
   const scope = 'https://www.googleapis.com/auth/youtube.readonly'
 
   const loginSuccess = (response) => {
     console.log('onsuccess', response)
+    setLoadingMessage('Loading your Youtube Data')
     // await register({ variables: { token: response.tokenId } })
     handleGoogleUser(response)
     handleAuthUser({ 
@@ -43,15 +51,18 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser }) => {
         <Title>Youtheme</Title>
         <span>Youtube subscriptions sorter</span>
       </div>
-      <LoginButton
-        clientId={CLIENT_ID}
-        onSuccess={loginSuccess}
-        onFailure={loginFailure}
-        scope={scope}
-        discoveryDocs={discoveryUrl}
-        cookiePolicy={'single_host_origin'}
-        isSignedIn
-      />
+      <BtnContainer>
+        {loadingMessage ? <p>{loadingMessage}</p> : null}
+        <LoginButton
+          clientId={CLIENT_ID}
+          onSuccess={loginSuccess}
+          onFailure={loginFailure}
+          scope={scope}
+          discoveryDocs={discoveryUrl}
+          cookiePolicy={'single_host_origin'}
+          isSignedIn
+        />
+      </BtnContainer>
     </Container>
   )
 }

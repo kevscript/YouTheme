@@ -16,6 +16,7 @@ const App = () => {
   const [authUser, setAuthUser] = useState(null)
   const [subscriptions, setSubscriptions] = useState([])
   const [themes, setThemes] = useState([])
+  const [loadingMessage, setLoadingMessage] = useState('')
 
   const [createTheme] = useMutation(CREATE_THEME, {
     onCompleted: (data) => setThemes(t => [...t, data.createTheme])
@@ -31,7 +32,7 @@ const App = () => {
       })
       setSubscriptions(data.register.subscriptions)
       setThemes(data.register.themes)
-
+      setLoadingMessage('')
     }
   })
 
@@ -67,9 +68,9 @@ const App = () => {
               ? <Redirect to='/' /> 
               : <LoginPage 
                   handleGoogleUser={setGoogleUser} 
-                  googleUser={googleUser} 
-                  authUser={authUser} 
                   handleAuthUser={register} 
+                  loadingMessage={loadingMessage}
+                  setLoadingMessage={setLoadingMessage}
                 />
           }
         </Route>
