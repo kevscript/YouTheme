@@ -30,7 +30,7 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
 
   const loginSuccess = (response) => {
     console.log('onsuccess', response)
-    setLoadingMessage('Loading your Youtube Data')
+    setLoadingMessage('Loading...')
     // await register({ variables: { token: response.tokenId } })
     handleGoogleUser(response)
     handleAuthUser({ 
@@ -52,7 +52,6 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
         <span>Youtube subscriptions sorter</span>
       </div>
       <BtnContainer>
-        {loadingMessage ? <p>{loadingMessage}</p> : null}
         <LoginButton
           clientId={CLIENT_ID}
           onSuccess={loginSuccess}
@@ -60,6 +59,7 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
           scope={scope}
           discoveryDocs={discoveryUrl}
           cookiePolicy={'single_host_origin'}
+          buttonText={loadingMessage ||'Login'}
           isSignedIn
         />
       </BtnContainer>

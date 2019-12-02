@@ -16,7 +16,7 @@ const LoginButton = (props) => {
       onFailure,
       uxMode,
       scope,
-      accessType
+      accessType,
     } = props
 
     const params = {
@@ -79,7 +79,7 @@ const LoginButton = (props) => {
 
   return (
     <button onClick={signIn}>
-      Google Login
+      {props.buttonText}
     </button>
   )
 }
