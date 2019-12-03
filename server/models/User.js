@@ -42,7 +42,14 @@ const userSchema = new Schema({
   themes: [
     {
       name: String,
-      id: String
+      id: String,
+      channels: [
+        {
+          _id: false,
+          channelId: String,
+          channelName: String
+        }
+      ]
     }
   ]
 })

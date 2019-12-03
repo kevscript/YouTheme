@@ -12,6 +12,11 @@ module.exports = gql`
   type Theme {
     name: String
     id: String
+    channels: [Channel]
+  }
+  type Channel {
+    channelId: String
+    channelName: String
   }
   type Subscription {
     kind: String
@@ -58,5 +63,6 @@ module.exports = gql`
     createTheme(id: String!, themeName: String!): Theme
     deleteTheme(id: String!, themeId: String!): String
     editThemeName(id: String!, themeId: String!, newName: String!): Theme
+    addChannel(id: String!, themeId: String!, channelId: String!, channelName: String!): Channel
   }
 `

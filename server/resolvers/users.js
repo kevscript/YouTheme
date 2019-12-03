@@ -13,7 +13,7 @@ module.exports = {
       try {
         const users = await User.find()
         return users
-      } catch(err) {
+      } catch (err) {
         throw new ApolloError(err.message)
       }
     },
@@ -25,7 +25,7 @@ module.exports = {
         } else {
           throw new ApolloError('No user with this id found in the DB')
         }
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
     },
     getThemes: async (_, { id }) => {
       try {
@@ -35,7 +35,7 @@ module.exports = {
         } else {
           throw new ApolloError('No user with this id found in the DB')
         }
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
     },
     getSubs: async (_, { id }) => {
       try {
@@ -45,7 +45,7 @@ module.exports = {
         } else {
           throw new ApolloError('No user with this id found in the DB')
         }
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
     }
   },
   Mutation: {
@@ -57,17 +57,17 @@ module.exports = {
           audience: process.env.CLIENT_ID
         })
         const { email, name, sub } = ticket.getPayload()
-    
+
         // check if user already exists in the database
         const foundUser = await User.findOne({ id: sub })
 
         if (foundUser) {
           // if user exists in the DB, return an object that matches graphql User Type
-          return { 
-            id: foundUser.id, 
-            email: foundUser.email, 
-            name: foundUser.name, 
-            createdAt: foundUser.createdAt, 
+          return {
+            id: foundUser.id,
+            email: foundUser.email,
+            name: foundUser.name,
+            createdAt: foundUser.createdAt,
             subscriptions: foundUser.subscriptions,
             themes: foundUser.themes
           }
@@ -81,27 +81,27 @@ module.exports = {
           await subsPromise()
             .then(async (subs) => {
               const createdAt = new Date().toISOString()
-              userObject = { 
-                email, 
-                name, 
-                id: sub, 
-                createdAt, 
+              userObject = {
+                email,
+                name,
+                id: sub,
+                createdAt,
                 subscriptions: subs,
-                themes: [] 
+                themes: []
               }
             }).catch(e => console.log(e))
 
-          const res = await new User(userObject).save() 
-          return { 
-            id: res.id, 
-            email: res.email, 
-            name: res.name, 
-            createdAt: res.createdAt, 
-            subscriptions: res.subscriptions, 
+          const res = await new User(userObject).save()
+          return {
+            id: res.id,
+            email: res.email,
+            name: res.name,
+            createdAt: res.createdAt,
+            subscriptions: res.subscriptions,
             themes: res.themes
           }
         }
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
     },
     reloadSubs: async (_, { id, accessToken }) => {
       try {
@@ -111,32 +111,48 @@ module.exports = {
         }
         let newSubs
         await subsPromise().then(subs => newSubs = subs)
-        await User.updateOne({id: id}, { $set: {subscriptions: newSubs} })
+        await User.updateOne({ id: id }, { $set: { subscriptions: newSubs } })
         return newSubs
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
     },
     createTheme: async (_, { id, themeName }) => {
       try {
         const newTheme = { name: themeName, id: Date.now().toString() }
-        await User.updateOne({id: id}, { $push: { themes: newTheme} })
+        await User.updateOne({ id: id }, { $push: { themes: newTheme } })
         return newTheme
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
     },
     deleteTheme: async (_, { id, themeId }) => {
       try {
-        await User.updateOne({id: id}, { $pull: { themes: {id: themeId} } })
+        await User.updateOne({ id: id }, { $pull: { themes: { id: themeId } } })
         return themeId
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
     },
     editThemeName: async (_, { id, themeId, newName }) => {
       try {
         await User.updateOne({ id: id, 'themes.id': themeId }, { $set: { "themes.$.name": newName } })
-        const res = await User.findOne({ id: id, themes: {$elemMatch: {id: themeId}} }, {'themes.$.id': themeId })
+        const res = await User.findOne({ id: id, themes: { $elemMatch: { id: themeId } } }, { 'themes.$.id': themeId })
         return {
           name: res.themes[0].name,
           id: res.themes[0].id
         }
-      } catch(e) { throw new ApolloError(e.message) }
+      } catch (e) { throw new ApolloError(e.message) }
+    },
+    addChannel: async (_, { id, themeId, channelId, channelName }) => {
+      try {
+        // try to add channel to the channels array of the theme
+        const channel = { channelId, channelName }
+        let wasAdded
+        // addToSet only adds a new entry if the channel object doesnt already exists
+        await User.updateOne({ id: id, 'themes.id': themeId }, { $addToSet: { "themes.$.channels": channel } }, null, (err, res) => wasAdded = res.nModified)
+        // check the res in callback, set it to wasAdded variable, if nModified !== 0, it means an entry(entries) was added/modfied
+        if (wasAdded) {
+          return channel
+        } else {
+          // if nModified is set to 0, it means the channel is already in the array
+          throw new ApolloError(`'${channelName}' is already added to this theme`)
+        }
+      } catch (e) { throw new ApolloError(e.message) }
     }
   }
 }
