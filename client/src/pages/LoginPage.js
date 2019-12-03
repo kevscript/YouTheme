@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { CLIENT_ID } from '../config'
 import LoginButton from '../components/LoginButton'

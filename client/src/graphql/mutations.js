@@ -9,6 +9,15 @@ export const CREATE_THEME = gql`
   }
 `
 
+export const ADD_CHANNEL = gql`
+  mutation AddChannel($id: String!, $themeId: String!, $channelId: String!, $channelName: String!) {
+    addChannel(id: $id, themeId: $themeId, channelId: $channelId, channelName: $channelName) {
+      channelId
+      channelName
+    }
+  }
+`
+
 export const REGISTER_USER = gql`
   mutation RegisterUser($idToken: String!, $accessToken: String!) {
     register(idToken: $idToken, accessToken: $accessToken) {
