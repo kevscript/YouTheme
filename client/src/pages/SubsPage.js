@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
+import SubsListItem from '../components/SubsListItem'
 
 const Container = styled.div`
   width: 100%;
@@ -42,7 +43,7 @@ const SubsPage = ({subscriptions, handleReload}) => {
         <button onClick={handleReload}>Reload</button>
       </Header>
       <ul>
-        {subscriptions && subscriptions.map(channel => <li key={channel.id}>{channel.snippet.title}</li> )}
+        {subscriptions && subscriptions.map(channel => <SubsListItem  key={channel.id} channel={channel} />)}
       </ul>
     </Container>
   )
