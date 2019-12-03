@@ -42,7 +42,7 @@ const ThemePage = (props) => {
           </Link>
           <PageName>{themeName}</PageName>
         </PrevPage>
-        <Link to="/edit">Edit</Link>
+        <Link to={{ pathname: `/edit/${themeId}`, state: {themeName: themeName} }}>Edit</Link>
       </Header>
       Theme Page id : {themeId}
     </Container>
