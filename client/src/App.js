@@ -78,13 +78,14 @@ const App = () => {
         <PrivateRoute 
           exact path="/" 
           user={authUser} 
-          component={() => <MainPage handleLogout={handleLogout} themes={themes} handleThemeCreation={handleThemeCreation}/>} 
+          component={(props) => <MainPage handleLogout={handleLogout} themes={themes} handleThemeCreation={handleThemeCreation} {...props} />
+        } 
         />
 
         <PrivateRoute 
-          exact path="/edit" 
+          path="/edit/:themeId" 
           user={authUser} 
-          component={() => <EditPage themes={themes} handleThemeCreation={handleThemeCreation}/>}
+          component={(props) => <EditPage subscriptions={subscriptions} {...props} />}
         />
 
         <PrivateRoute 
@@ -96,7 +97,7 @@ const App = () => {
         <PrivateRoute 
           exact path="/subscriptions" 
           user={authUser} 
-          component={() => <SubsPage subscriptions={subscriptions} handleReload={reloadSubs} />} 
+          component={(props) => <SubsPage subscriptions={subscriptions} handleReload={reloadSubs} {...props} />} 
         />
 
       </Router>
