@@ -142,15 +142,43 @@ module.exports = {
       try {
         // try to add channel to the channels array of the theme
         const channel = { channelId, channelName }
-        let wasAdded
+        let wasAdded = 0
         // addToSet only adds a new entry if the channel object doesnt already exists
-        await User.updateOne({ id: id, 'themes.id': themeId }, { $addToSet: { "themes.$.channels": channel } }, null, (err, res) => wasAdded = res.nModified)
+        await User.updateOne(
+          { id: id, 'themes.id': themeId },
+          { $addToSet: { "themes.$.channels": channel } },
+          null,
+          (err, res) => {
+            wasAdded = res.nModified
+            console.log('nModified:', res.nModified)
+          }
+        )
         // check the res in callback, set it to wasAdded variable, if nModified !== 0, it means an entry(entries) was added/modfied
         if (wasAdded) {
           return channel
         } else {
           // if nModified is set to 0, it means the channel is already in the array
-          throw new ApolloError(`'${channelName}' is already added to this theme`)
+          throw new ApolloError(`'${channelId}' is already added to this theme`)
+        }
+      } catch (e) { throw new ApolloError(e.message) }
+    },
+    removeChannel: async (_, { id, themeId, channelId }) => {
+      try {
+        let wasRemoved = 0
+        await User.updateOne(
+          { id: id, 'themes.id': themeId },
+          { $pull: { "themes.$.channels": { channelId: channelId } } },
+          null,
+          (err, res) => {
+            wasRemoved = res.nModified
+            console.log('nModified:', res.nModified)
+          }
+        )
+
+        if (wasRemoved) {
+          return channelId
+        } else {
+          throw new Error(`the object with id ${channelId} does not exist in the db`)
         }
       } catch (e) { throw new ApolloError(e.message) }
     }

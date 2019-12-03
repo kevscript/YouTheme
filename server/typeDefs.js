@@ -64,5 +64,6 @@ module.exports = gql`
     deleteTheme(id: String!, themeId: String!): String
     editThemeName(id: String!, themeId: String!, newName: String!): Theme
     addChannel(id: String!, themeId: String!, channelId: String!, channelName: String!): Channel
+    removeChannel(id: String!, themeId: String!, channelId: String!): Channel
   }
 `
