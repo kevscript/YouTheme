@@ -13,6 +13,17 @@ module.exports = {
         }
       } catch (e) { throw new ApolloError(e.message) }
     },
+    getTheme: async (_, { id, themeId }) => {
+      try {
+        let result
+        await User.findOne({ id: id })
+          .then(res => {
+            const tI = res.themes.findIndex(t => t.id === themeId)
+            result = res.themes[tI]
+          })
+        return result
+      } catch (e) { throw new ApolloError(e.message) }
+    }
   },
   Mutation: {
     createTheme: async (_, { id, themeName }) => {

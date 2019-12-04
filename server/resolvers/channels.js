@@ -2,7 +2,31 @@ const { ApolloError } = require('apollo-server')
 const User = require('../models/User')
 
 module.exports = {
-  Query: {},
+  Query: {
+    getChannels: async (_, { id, themeId }) => {
+      try {
+        let result
+        await User.findOne({ id: id })
+          .then(res => {
+            const tI = res.themes.findIndex(t => t.id === themeId)
+            result = res.themes[tI].channels
+          })
+        return result
+      } catch (e) { throw new ApolloError(e.message) }
+    },
+    getChannel: async (_, { id, themeId, channelId }) => {
+      try {
+        let result
+        await User.findOne({ id: id })
+          .then(res => {
+            const tI = res.themes.findIndex(t => t.id === themeId)
+            const cI = res.themes[tI].channels.findIndex(c => c.channelId === channelId)
+            result = res.themes[tI].channels[cI]
+          })
+        return result
+      } catch (e) { throw new ApolloError(e.message) }
+    }
+  },
   Mutation: {
     addChannel: async (_, { id, themeId, channelId, channelName }) => {
       try {
