@@ -39,19 +39,6 @@ export const EDIT_THEME_NAME = gql`
   }
 `
 
-export const GET_THEMES = gql`
-  query GetThemes($id: String!) {
-    getThemes(id: $id) {
-      id
-      name
-      channels {
-        channelId
-        channelName
-      }
-    }
-  }
-`
-
 export const ADD_CHANNEL = gql`
   mutation AddChannel($id: String!, $themeId: String!, $channelId: String!, $channelName: String!) {
     addChannel(id: $id, themeId: $themeId, channelId: $channelId, channelName: $channelName) {
