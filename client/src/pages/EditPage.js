@@ -45,13 +45,42 @@ const InputButton = styled.button`
   padding: 10px;
 `
 
-const EditPage = ({ subscriptions, addChannel, location }) => {
+const EditPage = ({ subscriptions, themes, addChannel, removeChannel, user, location }) => {
   const { themeId } = useParams()
   const { themeName } = location.state
   const [channelInput, setChannelInput] = useState('')
+  const activeThemeIndex = themes.findIndex(t => t.id === themeId) 
 
   const filteredChannels = () => {
     return subscriptions.filter(x => x.snippet.title.toLowerCase().includes(channelInput.toLowerCase()))
+  }
+
+  const handleChange = (e) => {
+    console.log(e.target.value)
+    setChannelInput(e.target.value)
+  } 
+
+  const handleAdd = () => {
+    if (channelInput) {
+      const channel = subscriptions.find(c => c.snippet.title === channelInput)
+      if (channel) {
+        addChannel({ variables: {
+          id: user.id,
+          themeId: themeId,
+          channelId: channel.id,
+          channelName: channel.snippet.title
+        }})
+      }
+    }
+  }
+
+  const handleRemove = (e) => {
+    const chanId = e.currentTarget.getAttribute('data-id')
+    removeChannel({ variables: {
+      id: user.id,
+      themeId: themeId,
+      channelId: chanId
+    }})
   }
 
   return (
@@ -69,17 +98,25 @@ const EditPage = ({ subscriptions, addChannel, location }) => {
           <Input 
             type="text" 
             list="selected-channel"
-            onChange={e => setChannelInput(e.target.value)} 
+            onChange={handleChange} 
             value={channelInput} 
             placeholder='Find channel'
           />
-          <InputButton>Add</InputButton>
+          <InputButton onClick={handleAdd}>Add</InputButton>
           <datalist id="selected-channel">
             {filteredChannels().map(channel => 
               <option key={channel.id} value={channel.snippet.title} data-id={channel.id} />
             )}
           </datalist>
         </InputContainer>
+        <div>
+          {themes[activeThemeIndex].channels && themes[activeThemeIndex].channels.map(c => 
+            <li key={c.channelId}>
+              <span>{c.channelName}</span>
+              <button data-id={c.channelId} onClick={handleRemove}>X</button>
+            </li>
+          )}
+        </div>
       </div>
     </Container>
   )
