@@ -67,7 +67,7 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, user, loca
         addChannel({ variables: {
           id: user.id,
           themeId: themeId,
-          channelId: channel.id,
+          channelId: channel.snippet.resourceId.channelId,
           channelName: channel.snippet.title
         }})
       }
