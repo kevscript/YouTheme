@@ -5,6 +5,49 @@ export const CREATE_THEME = gql`
     createTheme(id: $id, themeName: $themeName) {
       id
       name
+      channels {
+        channelId
+        channelName
+      }
+    }
+  }
+`
+
+export const DELETE_THEME = gql`
+  mutation DeleteTheme($id: String!, $themeId: String!) {
+    deleteTheme(id: $id, themeId: $themeId) {
+      id
+      name
+      channels {
+        channelId
+        channelName
+      }
+    }
+  }
+`
+
+export const EDIT_THEME_NAME = gql`
+  mutation EditThemeName($id: String!, $themeId: String!) {
+    editThemeName(id: $id, themeId: $themeId) {
+      id
+      name
+      channels {
+        channelId
+        channelName
+      }
+    }
+  }
+`
+
+export const GET_THEMES = gql`
+  query GetThemes($id: String!) {
+    getThemes(id: $id) {
+      id
+      name
+      channels {
+        channelId
+        channelName
+      }
     }
   }
 `
@@ -12,8 +55,25 @@ export const CREATE_THEME = gql`
 export const ADD_CHANNEL = gql`
   mutation AddChannel($id: String!, $themeId: String!, $channelId: String!, $channelName: String!) {
     addChannel(id: $id, themeId: $themeId, channelId: $channelId, channelName: $channelName) {
-      channelId
-      channelName
+      id
+      name
+      channels {
+        channelId
+        channelName
+      }
+    }
+  }
+`
+
+export const REMOVE_CHANNEL = gql`
+  mutation RemoveChannel($id: String!, $themeId: String!, $channelId: String!) {
+    removeChannel(id: $id, themeId: $themeId, channelId: $channelId) {
+      id
+      name
+      channels {
+        channelId
+        channelName
+      }
     }
   }
 `
@@ -59,6 +119,10 @@ export const REGISTER_USER = gql`
       themes {
         name
         id
+        channels {
+          channelId
+          channelName
+        }
       }
     }
   }
