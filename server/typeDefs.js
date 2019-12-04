@@ -60,13 +60,13 @@ module.exports = gql`
     getChannel(id: String!, themeId: String!, channelId: String!): Channel
   }
   type Mutation {
-    register(idToken: String!, accessToken: String!): User
+    register(idToken: String!, accessToken: String!): User 
     reloadSubs(id: String!, accessToken: String!): [Subscription]
     createTheme(id: String!, themeName: String!): Theme
     deleteTheme(id: String!, themeId: String!): String
     editThemeName(id: String!, themeId: String!, newName: String!): Theme
-    addChannel(id: String!, themeId: String!, channelId: String!, channelName: String!): [Channel]
-    removeChannel(id: String!, themeId: String!, channelId: String!): [Channel]
+    addChannel(id: String!, themeId: String!, channelId: String!, channelName: String!): Theme
+    removeChannel(id: String!, themeId: String!, channelId: String!): Theme
     testFind(id: String!, themeId: String!, channelId: String!): Channel
   }
 `

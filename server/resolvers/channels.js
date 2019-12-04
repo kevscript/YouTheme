@@ -40,7 +40,7 @@ module.exports = {
             if(!exists) {
               channels.push({channelId, channelName})
               res.save()
-              result = channels
+              result = res.themes[tI]
             } else {
               throw new ApolloError(`a channel with id ${channelId} is already added to the theme`)
             }
@@ -59,7 +59,7 @@ module.exports = {
             if (exists) {
               res.themes[tI].channels = res.themes[tI].channels.filter(c => c.channelId !== channelId)
               res.save()
-              result = res.themes[tI].channels
+              result = res.themes[tI]
             } else {
               throw new ApolloError(`there is no channel with id ${channelId} in this theme`)
             }
