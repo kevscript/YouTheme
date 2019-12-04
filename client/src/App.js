@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
-import { REGISTER_USER, CREATE_THEME, RELOAD_SUBS } from './graphql/mutations'
+import { 
+  REGISTER_USER, 
+  CREATE_THEME, 
+  RELOAD_SUBS, 
+  ADD_CHANNEL,
+  REMOVE_CHANNEL
+} from './graphql/mutations'
 
 import GlobalStyle from './styles/global'
 import PrivateRoute from './PrivateRoute'
@@ -20,6 +26,24 @@ const App = () => {
 
   const [createTheme] = useMutation(CREATE_THEME, {
     onCompleted: (data) => setThemes(t => [...t, data.createTheme])
+  })
+
+  const [addChannel] = useMutation(ADD_CHANNEL, {
+    onCompleted: (data) => {
+      const themesCopy = [...themes]
+      const tI = themesCopy.findIndex(t => t.id === data.addChannel.id)
+      themesCopy[tI] = {...data.addChannel}
+      setThemes([...themesCopy])
+    }
+  })
+
+  const [removeChannel] = useMutation(REMOVE_CHANNEL, {
+    onCompleted: (data) => {
+      const themesCopy = [...themes]
+      const tI = themesCopy.findIndex(t => t.id === data.removeChannel.id)
+      themesCopy[tI] = {...data.removeChannel}
+      setThemes([...themesCopy])
+    }
   })
 
   const [register] = useMutation(REGISTER_USER, {
@@ -85,7 +109,16 @@ const App = () => {
         <PrivateRoute 
           path="/edit/:themeId" 
           user={authUser} 
-          component={(props) => <EditPage subscriptions={subscriptions} {...props} />}
+          component={(props) => 
+            <EditPage 
+              user={authUser}
+              subscriptions={subscriptions} 
+              themes={themes}
+              addChannel={addChannel} 
+              removeChannel={removeChannel}
+              {...props} 
+            />
+          }
         />
 
         <PrivateRoute 
