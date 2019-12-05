@@ -88,7 +88,6 @@ const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
           <InputButton onClick={() => handleThemeCreation(themeInput)}>Create</InputButton>
         </InputContainer>
         <ThemesGrid>
-          <GridItem to={{ pathname: `/theme/all`, state: {themeName: 'All Themes'} }}>All Themes</GridItem>
           {themes && themes.map(theme => 
             <GridItem to={{ pathname: `/theme/${theme.id}`, state: {themeName: theme.name} }} key={theme.id}>{theme.name}</GridItem>
           )}
