@@ -124,7 +124,13 @@ const App = () => {
         <PrivateRoute 
           path="/theme/:themeId" 
           user={authUser} 
-          component={ThemePage} 
+          component={(props) =>
+            <ThemePage 
+              user={authUser}
+              themes={themes}
+              {...props}
+            />
+          } 
         />
 
         <PrivateRoute 
