@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
+import ChannelListItem from '../components/ChannelListItem'
 
 const Container = styled.div`
   width: 100%;
@@ -34,15 +35,19 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 40px;
 `
 
 const Input = styled.input`
-  padding: 10px;
+  height: 100%;
   flex: 1;
+  padding: 0 10px;
 `
 
 const InputButton = styled.button`
   padding: 10px;
+  height: 100%;
+  width: 80px;
 `
 
 const EditPage = ({ subscriptions, themes, addChannel, removeChannel, user, location }) => {
@@ -70,6 +75,7 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, user, loca
           channelId: channel.snippet.resourceId.channelId,
           channelName: channel.snippet.title
         }})
+        setChannelInput('')
       }
     }
   }
@@ -87,7 +93,7 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, user, loca
     <Container>
       <Header>
         <PrevPage>
-          <Link to="/">
+          <Link to={`/`}>
             <Icon icon={LeftIcon} name='back to menu arrow' />
           </Link>
           <PageName>Editing: {themeName}</PageName>
@@ -105,16 +111,13 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, user, loca
           <InputButton onClick={handleAdd}>Add</InputButton>
           <datalist id="selected-channel">
             {filteredChannels().map(channel => 
-              <option key={channel.id} value={channel.snippet.title} data-id={channel.id} />
+              <option key={`option-${channel.id}`} value={channel.snippet.title} data-id={channel.id} />
             )}
           </datalist>
         </InputContainer>
         <div>
-          {themes[activeThemeIndex].channels && themes[activeThemeIndex].channels.map(c => 
-            <li key={c.channelId}>
-              <span>{c.channelName}</span>
-              <button data-id={c.channelId} onClick={handleRemove}>X</button>
-            </li>
+          {themes[activeThemeIndex].channels && themes[activeThemeIndex].channels.map(channel => 
+            <ChannelListItem key={channel.id} channel={channel} handleRemove={handleRemove} />
           )}
         </div>
       </div>
