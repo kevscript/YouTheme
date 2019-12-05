@@ -16,10 +16,6 @@ const Name = styled.span`
   margin-left: 10px;
 `
 
-const ChannelSubs = styled.span`
-
-`
-
 const SubsListItem = ({ channel }) => {
   return (
     <Item>
@@ -30,7 +26,6 @@ const SubsListItem = ({ channel }) => {
         circle
       />
       <Name>{channel.snippet.title}</Name>
-      <ChannelSubs></ChannelSubs>
     </Item>
   )
 }
