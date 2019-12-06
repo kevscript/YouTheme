@@ -14,21 +14,28 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 60px;
-  background: #535353;
+  background: #0c2461;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
+  position: fixed;
+  top: 0;
 `
 
-const PrevPage = styled.div`
-  display: flex;
-  align-items: center;
+const MainContainer = styled.div`
+  margin-top: 60px;
+  padding: 5px 0;
 `
 
 const PageName = styled.h3`
-  margin-left: 25px;
-  font-size: 26px;
+  margin-left: 15px;
+  font-size: 20px;
+  color: #f1f1f1;
+`
+
+const StyledLink = styled(Link)`
+  color: #f1f1f1;
 `
 
 const VideosGrid = styled.div`
@@ -73,24 +80,24 @@ const ThemePage = ({user, themes, location}) => {
   return (
     <Container>
       <Header>
-        <PrevPage>
-          <Link to="/">
-            <Icon icon={LeftIcon} name='back to menu arrow' />
-          </Link>
-          <PageName>{themeName}</PageName>
-        </PrevPage>
-        <Link to={{ pathname: `/edit/${themeId}`, state: {themeName: themeName} }}>Edit</Link>
+        <Link to="/">
+          <Icon icon={LeftIcon} name='back to menu arrow' />
+        </Link>
+        <PageName>{themeName}</PageName>
+        <StyledLink to={{ pathname: `/edit/${themeId}`, state: {themeName: themeName} }}>Edit</StyledLink>
       </Header>
-      {loading 
-        ? <h1>Loading...</h1>
-        : <VideosGrid>
-            {videos && videos.map(channel => {
-              return channel.items.map(item => 
-                <VideoItem key={item.id.videoId} item={item} />
-              )
-            })}
-          </VideosGrid>
-      }
+      <MainContainer>
+        {loading 
+          ? <h1>Loading...</h1>
+          : <VideosGrid>
+              {videos && videos.map(channel => {
+                return channel.items.map(item => 
+                  <VideoItem key={item.id.videoId} item={item} />
+                )
+              })}
+            </VideosGrid>
+        }
+      </MainContainer>
     </Container>
   )
 }
