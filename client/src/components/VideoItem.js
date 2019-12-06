@@ -5,12 +5,16 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `
 
 const ThumbContainer = styled.a`
-  width: 100%;
+  max-width: 320px;
   height: auto;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const Thumb = styled.img`
@@ -21,19 +25,23 @@ const Thumb = styled.img`
   align-items: center;
 `
 
-const Title = styled.span`
+const Title = styled.div`
   margin-top: 5px;
   font-weight: 500;
+  font-size: 15px;
 `
 
 const ChannelTitle = styled.span`
   font-weight: 400;
   color: #333;
+  font-size: 15px;
 `
 
+const TextContainer = styled.div`
+  width: 320px;
+`
 
 const VideoItem = ({ item }) => {
-
   return (
     <ItemContainer>
       <ThumbContainer 
@@ -43,10 +51,12 @@ const VideoItem = ({ item }) => {
       >
         <Thumb src={item.snippet.thumbnails.medium.url} />
       </ThumbContainer>
-      <Title>
-        {item.snippet.title} 
-        <ChannelTitle> - {item.snippet.channelTitle}</ChannelTitle>
-      </Title>
+      <TextContainer>
+        <Title>
+          {item.snippet.title} 
+          <ChannelTitle> - {item.snippet.channelTitle}</ChannelTitle>
+        </Title>
+      </TextContainer>
     </ItemContainer>
   )
 }
