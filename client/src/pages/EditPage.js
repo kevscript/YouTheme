@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Link, useParams, Redirect } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+import Select from 'react-select'
 
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
@@ -47,13 +48,14 @@ const Input = styled.input`
 
 const InputButton = styled.button`
   padding: 10px 20px;
+  margin: 0 0 0 10px;
   font-size: 15px;
   background: #0c2461;
   height: 40px;
   color: #f1f1f1;
-  border: 1px solid #0c2461;
-  border-radius: 0 3px 3px 0;
   font-weight: 500;
+  border: 0;
+  border-radius: 5px;
 `
 
 const MainContainer = styled.div`
@@ -71,6 +73,10 @@ const Button = styled(Link)`
   text-decoration: none;
 `
 
+const StyledSelect = styled(Select)`
+  flex: 1; 
+`
+
 const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteTheme, user, location }) => {
   const { themeId } = useParams()
   const { themeName } = location.state
@@ -82,8 +88,8 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteThem
   }
 
   const handleChange = (e) => {
-    console.log(e.target.value)
-    setChannelInput(e.target.value)
+    console.log(e.value)
+    setChannelInput(e.value)
   } 
 
   const handleThemeDelete = () => {
@@ -95,7 +101,7 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteThem
 
   const handleAdd = () => {
     if (channelInput) {
-      const channel = subscriptions.find(c => c.snippet.title === channelInput)
+      const channel = subscriptions.find(c => c.snippet.resourceId.channelId === channelInput)
       if (channel) {
         addChannel({ variables: {
           id: user.id,
@@ -128,12 +134,18 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteThem
       </Header>
       <MainContainer>
         <InputContainer>
-          <Input 
+          {/* <Input 
             type="text" 
             list="selected-channel"
             onChange={handleChange} 
             value={channelInput} 
             placeholder='Find channel'
+          /> */}
+          <StyledSelect 
+            options={subscriptions.map(x => {
+              return { value: x.snippet.resourceId.channelId, label: x.snippet.title }
+            })} 
+            onChange={handleChange}
           />
           <InputButton onClick={handleAdd}>Add</InputButton>
           <datalist id="selected-channel">
