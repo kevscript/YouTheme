@@ -63,7 +63,7 @@ module.exports = gql`
     register(idToken: String!, accessToken: String!): User 
     reloadSubs(id: String!, accessToken: String!): [Subscription]
     createTheme(id: String!, themeName: String!): Theme
-    deleteTheme(id: String!, themeId: String!): String
+    deleteTheme(id: String!, themeId: String!): [Theme]
     editThemeName(id: String!, themeId: String!, newName: String!): Theme
     addChannel(id: String!, themeId: String!, channelId: String!, channelName: String!): Theme
     removeChannel(id: String!, themeId: String!, channelId: String!): Theme

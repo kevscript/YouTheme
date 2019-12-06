@@ -35,8 +35,14 @@ module.exports = {
     },
     deleteTheme: async (_, { id, themeId }) => {
       try {
-        await User.updateOne({ id: id }, { $pull: { themes: { id: themeId } } })
-        return themeId
+        let result
+        await User.findOne({id: id})
+          .then(res => {
+            result = res.themes.filter(t => t.id !== themeId)
+            res.themes = res.themes.filter(t => t.id === themeId)
+            res.save()
+          })
+          return result
       } catch (e) { throw new ApolloError(e.message) }
     },
     editThemeName: async (_, { id, themeId, newName }) => {
