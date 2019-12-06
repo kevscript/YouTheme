@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3 {
-    font-family: 'Lobster', 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
   }
   
   code {
