@@ -52,4 +52,5 @@ mongoose
   .connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen({ port }))
   .then(() => console.log(`Server Running on localhost:${port} -> Api: "/api" & GraphQL: "${server.graphqlPath}"`))
+  .catch(err => console.log(err))
  
