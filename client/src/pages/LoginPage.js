@@ -60,7 +60,7 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
       </div>
       <BtnContainer>
         <LoginButton
-          clientId={CLIENT_ID}
+          clientId={process.env.REACT_APP_CLIENT_ID}
           onSuccess={loginSuccess}
           onFailure={loginFailure}
           scope={scope}
