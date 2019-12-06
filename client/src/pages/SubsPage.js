@@ -23,11 +23,6 @@ const Header = styled.div`
   z-index: 99;
 `
 
-const PrevPage = styled.div`
-  display: flex;
-  align-items: center;
-`
-
 const PageName = styled.h3`
   margin-left: 15px;
   font-size: 18px;
@@ -53,12 +48,10 @@ const SubsPage = ({subscriptions, handleReload}) => {
   return (
     <Container>
       <Header>
-        <PrevPage>
-          <Link to="/">
-            <Icon icon={LeftIcon} name='back to main page arrow' />
-          </Link>
-          <PageName>Subscribed Channels</PageName>
-        </PrevPage>
+        <Link to="/">
+          <Icon icon={LeftIcon} name='back to main page arrow' />
+        </Link>
+        <PageName>Subscribed To</PageName>
         <Button onClick={handleReload}>Reload</Button>
       </Header>
       <List>
