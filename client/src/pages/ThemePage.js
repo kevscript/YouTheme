@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Link, useParams } from 'react-router-dom'
-import { API_KEY } from '../config'
+import axios from 'axios'
 
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
@@ -70,11 +70,7 @@ const ThemePage = ({ user, themes, location }) => {
         if (channelIds.length > 0) {
           setLoading(true)
           setLoadingMessage('Loading...')
-          const promises = channelIds.map(id => {
-            return fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${id}&part=snippet,id&order=date&maxResults=5`)
-              .then(res => res.json())
-              .then(res => res)
-          })
+          const promises = channelIds.map(id => axios.get(`/${id}/5`).then(res => res.data))
           Promise.all(promises)
             .then(data => {
               console.log(data)
