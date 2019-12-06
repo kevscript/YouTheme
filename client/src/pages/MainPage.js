@@ -44,15 +44,16 @@ const PageName = styled.h3`
 `
 
 const MainContainer = styled.div`
-  margin-top: 60px;
+  margin: 60px 0;
 `
 
 const ThemesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: 120px;
-  grid-gap: 20px;
   padding: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 20px;
 `
 
 const GridItem = styled(Link)`
@@ -88,7 +89,8 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
+  padding: 20px;
+  background: white;
 `
 
 const Input = styled.input`
@@ -99,6 +101,7 @@ const Input = styled.input`
   border-radius: 3px 0 0 3px;
   border: 1px solid #0c2461;
   background: #f1f1f1;
+  z-index: 99;
 `
 
 const InputButton = styled.button`
