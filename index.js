@@ -11,7 +11,7 @@ const resolvers = require('./resolvers')
 
 const api = require('./api')
 
-const port = 4000
+const port = process.env.PORT || 4000
 const server = new ApolloServer({ typeDefs, resolvers })
 const app = express()
 
@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'production') {
 
 mongoose
   .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => app.listen({ port }))
+  .then(() => app.listen({ port: port }))
   .then(() => console.log(`Server Running on localhost:${port} -> Api: "/api" & GraphQL: "${server.graphqlPath}"`))
   .catch(err => console.log(err))
  
