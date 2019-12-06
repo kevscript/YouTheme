@@ -1,4 +1,24 @@
 import React, { useEffect } from 'react'
+import styled from 'styled-components'
+import Icon from './Icon'
+import GoogleIcon from '../assets/google.svg'
+
+const Button = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  border: none;
+  font-size: 18px;
+  padding: 18px 25px;
+  background: #0c2461;
+  color: #f1f1f1;
+  font-weight: 500;
+
+  span {
+    margin-right: 10px;
+  }
+`
 
 const LoginButton = (props) => {
 
@@ -78,9 +98,10 @@ const LoginButton = (props) => {
   }
 
   return (
-    <button onClick={signIn}>
-      {props.buttonText}
-    </button>
+    <Button onClick={signIn}>
+      <span>{props.buttonText}</span>
+      <Icon icon={GoogleIcon} width='18px' height='18px' />
+    </Button>
   )
 }
 
