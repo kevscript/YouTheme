@@ -24,8 +24,8 @@ const Header = styled.div`
 `
 
 const MainContainer = styled.div`
-  margin-top: 60px;
-  padding: 5px 0;
+  width: 100%;
+  margin: 60px auto 0;
 `
 
 const PageName = styled.h3`
@@ -38,29 +38,38 @@ const StyledLink = styled(Link)`
   color: #f1f1f1;
 `
 
-const VideosGrid = styled.div`
-  width: 90%;
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: 25px;
-  margin: 25px auto;
+const VideosContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 25px 0;
 `
 
-const ThemePage = ({user, themes, location}) => {
+const VideosGrid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 30px;
+`
+
+const ThemePage = ({ user, themes, location }) => {
   const { themeId } = useParams()
   const { themeName } = location.state
-  
+
   const [videos, setVideos] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('')
 
   useEffect(() => {
-    if(themeId) {
-      setLoading(true)
+    if (themeId) {
       try {
         const activeThemeIndex = themes.findIndex(t => t.id === themeId)
         const activeTheme = themes[activeThemeIndex]
         const channelIds = activeTheme.channels.map(c => c.channelId)
         if (channelIds.length > 0) {
+          setLoading(true)
+          setLoadingMessage('Loading...')
           const promises = channelIds.map(id => {
             return fetch(`https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${id}&part=snippet,id&order=date&maxResults=5`)
               .then(res => res.json())
@@ -72,8 +81,12 @@ const ThemePage = ({user, themes, location}) => {
               setVideos(data)
               setLoading(false)
             })
+        } else {
+          setLoadingMessage('No videos in feed yet, edit Theme & select channels')
         }
-      } catch(err) { console.log(err) }
+      } catch (err) { console.log(err) }
+    } else {
+      setLoadingMessage('Error no theme')
     }
   }, [])
 
@@ -84,19 +97,21 @@ const ThemePage = ({user, themes, location}) => {
           <Icon icon={LeftIcon} name='back to menu arrow' />
         </Link>
         <PageName>{themeName}</PageName>
-        <StyledLink to={{ pathname: `/edit/${themeId}`, state: {themeName: themeName} }}>Edit</StyledLink>
+        <StyledLink to={{ pathname: `/edit/${themeId}`, state: { themeName: themeName } }}>Edit</StyledLink>
       </Header>
       <MainContainer>
-        {loading 
-          ? <h1>Loading...</h1>
-          : <VideosGrid>
+        <VideosContainer>
+          {loading
+            ? <p>{loadingMessage}</p>
+            : <VideosGrid>
               {videos && videos.map(channel => {
-                return channel.items.map(item => 
+                return channel.items.map(item =>
                   <VideoItem key={item.id.videoId} item={item} />
                 )
               })}
             </VideosGrid>
-        }
+          }
+        </VideosContainer>
       </MainContainer>
     </Container>
   )
