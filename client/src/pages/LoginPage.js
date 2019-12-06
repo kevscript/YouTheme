@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { CLIENT_ID } from '../config'
 import LoginButton from '../components/LoginButton'
 
+
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -14,7 +15,13 @@ const Container = styled.div`
 `
 
 const Title = styled.h1`
+  font-family: "Lobster", "Roboto", sans-serif;
   font-size: 50px;
+  color: #0c2461;
+`
+
+const SubTitle = styled.span`
+  font-size: 15px;
 `
 
 const BtnContainer = styled.div`
@@ -49,7 +56,7 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
     <Container>
       <div>
         <Title>Youtheme</Title>
-        <span>Youtube subscriptions sorter</span>
+        <SubTitle>Youtube subscriptions sorter.</SubTitle>
       </div>
       <BtnContainer>
         <LoginButton
@@ -59,7 +66,7 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
           scope={scope}
           discoveryDocs={discoveryUrl}
           cookiePolicy={'single_host_origin'}
-          buttonText={loadingMessage ||'Login'}
+          buttonText={loadingMessage ||'Sign In with Google'}
           isSignedIn
         />
       </BtnContainer>
