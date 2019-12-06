@@ -20,16 +20,16 @@ app.use(cors())
 
 server.applyMiddleware({ app, path: '/graphql' })
 
-app.get('/', function(req, res){
-  res.redirect('/api');
-});
+// app.get('/', function(req, res){
+//   res.redirect('/api');
+// });
 
 // default api route
-// app.get('/api', (req, res) => {
-//   res.json({
-//     message: 'Default Route for Youtheme!'
-//   })
-// })
+app.get('/api', (req, res) => {
+  res.json({
+    message: 'Default Route for Youtheme!'
+  })
+})
 
 // api route for video fetching
 app.get('/api/:channelId/:maxRes', (req, res) => {
