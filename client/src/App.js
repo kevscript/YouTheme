@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { 
   REGISTER_USER, 
   CREATE_THEME, 
+  DELETE_THEME,
   RELOAD_SUBS, 
   ADD_CHANNEL,
   REMOVE_CHANNEL
@@ -26,6 +27,10 @@ const App = () => {
 
   const [createTheme] = useMutation(CREATE_THEME, {
     onCompleted: (data) => setThemes(t => [...t, data.createTheme])
+  })
+
+  const [deleteTheme] = useMutation(DELETE_THEME, {
+    onCompleted: (data) => setThemes([...data.deleteTheme])
   })
 
   const [addChannel] = useMutation(ADD_CHANNEL, {
@@ -114,6 +119,7 @@ const App = () => {
               user={authUser}
               subscriptions={subscriptions} 
               themes={themes}
+              deleteTheme={deleteTheme}
               addChannel={addChannel} 
               removeChannel={removeChannel}
               {...props} 
