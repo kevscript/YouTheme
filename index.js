@@ -4,6 +4,7 @@ const { ApolloServer } = require('apollo-server-express')
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose')
+const uri = 'mongodb+srv://kevscript:kevscript123@cluster0-h7mug.mongodb.net/youtheme?retryWrites=true&w=majority'
 
 const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
@@ -49,7 +50,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 mongoose
-  .connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen({ port }))
   .then(() => console.log(`Server Running on localhost:${port} -> Api: "/api" & GraphQL: "${server.graphqlPath}"`))
   .catch(err => console.log(err))
