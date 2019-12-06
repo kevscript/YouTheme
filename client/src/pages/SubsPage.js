@@ -13,11 +13,14 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 60px;
-  background: #535353;
+  background: #0c2461;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
+  position: fixed;
+  top: 0;
+  z-index: 99;
 `
 
 const PrevPage = styled.div`
@@ -26,9 +29,25 @@ const PrevPage = styled.div`
 `
 
 const PageName = styled.h3`
-  margin-left: 25px;
-  font-size: 26px;
+  margin-left: 15px;
+  font-size: 18px;
+  color: #f1f1f1;
 `
+
+const Button = styled.button`
+  padding: 8px 15px;
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.6);
+  background: #0c2461;
+  color: #f1f1f1;
+  font-weight: 600;
+  cursor: pointer;
+`
+
+const List = styled.ul`
+  margin-top: 60px;
+`
+
 
 const SubsPage = ({subscriptions, handleReload}) => {
   return (
@@ -40,11 +59,11 @@ const SubsPage = ({subscriptions, handleReload}) => {
           </Link>
           <PageName>Subscribed Channels</PageName>
         </PrevPage>
-        <button onClick={handleReload}>Reload</button>
+        <Button onClick={handleReload}>Reload</Button>
       </Header>
-      <ul>
+      <List>
         {subscriptions && subscriptions.map(channel => <SubsListItem  key={channel.id} channel={channel} />)}
-      </ul>
+      </List>
     </Container>
   )
 }
