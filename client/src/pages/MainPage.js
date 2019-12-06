@@ -11,11 +11,13 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 60px;
-  background: #535353;
+  background: #0c2461;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 5%;
+  position: fixed;
+  top: 0;
 `
 
 const Menu = styled.div`
@@ -24,45 +26,90 @@ const Menu = styled.div`
 
 const MenuItem = styled.li`
   cursor: pointer;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 20px;
+  color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const StyledLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
 `
 
 const PageName = styled.h3`
-  font-size: 26px;
+  font-size: 18px;
+  color: #f1f1f1;
+`
+
+const MainContainer = styled.div`
+  margin-top: 60px;
 `
 
 const ThemesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-auto-rows: 120px;
-  grid-gap: 10px;
-  padding: 10px;
+  grid-gap: 20px;
+  padding: 20px;
 `
 
 const GridItem = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  flex-direction: column;
+  border: 1px solid rgba(12, 36, 97, 0.8);
+  border-radius: 3px;
   cursor: pointer;
   text-decoration: none;
-  color: inherit;
+  color: rgba(12, 36, 97, 0.8);
+  font-size: 20px;
+  font-weight: 600;
+
+  h3 {
+    font-family: -apple-system,BlinkMacSystemFont,"Roboto","Segoe UI","Open Sans","Oxygen", "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue", sans-serif;
+    text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 400;
+  }
 `
 
 const InputContainer = styled.div`
+  position: fixed;
+  bottom: 0;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px;
 `
 
 const Input = styled.input`
   padding: 10px;
   flex: 1;
+  font-size: 15px;
+  height: 40px;
+  border-radius: 3px 0 0 3px;
+  border: 1px solid #0c2461;
+  background: #f1f1f1;
 `
 
 const InputButton = styled.button`
-  padding: 10px;
+  padding: 10px 20px;
+  font-size: 15px;
+  background: #0c2461;
+  height: 40px;
+  color: #f1f1f1;
+  border: 1px solid #0c2461;
+  border-radius: 0 3px 3px 0;
+  font-weight: 500;
 `
 
 const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
@@ -72,27 +119,30 @@ const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
   return (
     <Container>
       <Header>
-        <PageName>Dashboard</PageName>
+        <PageName>Themes</PageName>
         <Menu>
           <MenuItem>
-            <Link to="/subscriptions">Channels</Link>
+            <StyledLink to="/subscriptions">Channels</StyledLink>
           </MenuItem>
           <MenuItem>
             <LogoutButton onLogoutSuccess={handleLogout} /> 
           </MenuItem>
         </Menu>
       </Header>
-      <div>
-        <InputContainer>
-          <Input type="text" value={themeInput} onChange={e => setThemeInput(e.target.value)} placeholder="New theme name"/>
-          <InputButton onClick={() => handleThemeCreation(themeInput)}>Create</InputButton>
-        </InputContainer>
+      <MainContainer>
         <ThemesGrid>
           {themes && themes.map(theme => 
-            <GridItem to={{ pathname: `/theme/${theme.id}`, state: {themeName: theme.name} }} key={theme.id}>{theme.name}</GridItem>
+            <GridItem to={{ pathname: `/theme/${theme.id}`, state: {themeName: theme.name} }} key={theme.id}>
+              <h3>{theme.name}</h3>
+              <span>channels: {theme.channels ? theme.channels.length : 0}</span>
+            </GridItem>
           )}
         </ThemesGrid>
-      </div>
+      </MainContainer>
+      <InputContainer>
+        <Input type="text" value={themeInput} onChange={e => setThemeInput(e.target.value)} placeholder="New Theme Name"/>
+        <InputButton onClick={() => handleThemeCreation(themeInput)}>Create</InputButton>
+      </InputContainer>
     </Container>
   )
 }
