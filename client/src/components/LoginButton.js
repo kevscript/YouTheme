@@ -8,13 +8,21 @@ const Button = styled.button`
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  border: none;
+  border: 1px solid rgba(12, 36, 97, 0.8);
   font-size: 18px;
   padding: 18px 25px;
-  background: #0c2461;
-  color: #f1f1f1;
+  background: transparent;
+  color: #0c2461;
   font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
 
+  :hover {
+    background: #0c2461;
+    color: #f1f1f1;
+    transition: all 0.25s ease-in-out;
+    transform: translateY(-5px);
+  }
   span {
     margin-right: 10px;
   }
