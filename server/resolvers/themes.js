@@ -39,7 +39,7 @@ module.exports = {
         await User.findOne({id: id})
           .then(res => {
             result = res.themes.filter(t => t.id !== themeId)
-            res.themes = res.themes.filter(t => t.id === themeId)
+            res.themes = res.themes.filter(t => t.id !== themeId)
             res.save()
           })
           return result
