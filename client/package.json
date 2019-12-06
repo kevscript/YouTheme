@@ -18,7 +18,7 @@
     "react-select": "^3.0.8",
     "styled-components": "^4.4.1"
   },
-  "proxy": "http://localhost:4000/api",
+  "proxy": "http://localhost:4000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

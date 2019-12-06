@@ -70,7 +70,7 @@ const ThemePage = ({ user, themes, location }) => {
         if (channelIds.length > 0) {
           setLoading(true)
           setLoadingMessage('Loading...')
-          const promises = channelIds.map(id => axios.get(`/${id}/5`).then(res => res.data))
+          const promises = channelIds.map(id => axios.get(`/api/${id}/5`).then(res => res.data))
           Promise.all(promises)
             .then(data => {
               console.log(data)
