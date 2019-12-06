@@ -120,7 +120,7 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteThem
   return (
     <Container>
       <Header>
-      <Link to={`/`}>
+      <Link to={{ pathname: `/theme/${themeId}`, state: {themeName: themeName} }}>
         <Icon icon={LeftIcon} name='back to menu arrow' />
       </Link>
       <PageName>Editing: {themeName}</PageName>
