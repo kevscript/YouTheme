@@ -19,6 +19,10 @@ app.use(cors())
 
 server.applyMiddleware({ app, path: '/graphql' })
 
+app.get('/', function(req, res){
+  res.redirect('/api');
+});
+
 // default api route
 app.get('/api', (req, res) => {
   res.json({
