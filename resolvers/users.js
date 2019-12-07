@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { ApolloError } = require('apollo-server')
 // google verification client
 const { OAuth2Client } = require('google-auth-library')

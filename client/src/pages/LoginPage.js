@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import LoginButton from '../components/LoginButton'
+// import LoginButton from '../components/LoginButton'
+import { GoogleLogin } from 'react-google-login';
 
 
 const Container = styled.div`
@@ -58,7 +59,7 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
         <SubTitle>Youtube subscriptions sorter.</SubTitle>
       </div>
       <BtnContainer>
-        <LoginButton
+        {/* <LoginButton
           clientId={process.env.REACT_APP_CLIENT_ID}
           onSuccess={loginSuccess}
           onFailure={loginFailure}
@@ -67,7 +68,18 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
           cookiePolicy={'single_host_origin'}
           buttonText={loadingMessage ||'Sign In with Google'}
           isSignedIn
-        />
+        /> */}
+
+      <GoogleLogin
+        clientId={process.env.REACT_APP_CLIENT_ID}
+        buttonText="Login"
+        onSuccess={loginSuccess}
+        onFailure={loginFailure}
+        cookiePolicy={'single_host_origin'}
+        scope={scope}
+        discoveryDocs={discoveryUrl}
+        isSignedIn
+      />
       </BtnContainer>
     </Container>
   )

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { GoogleLogout } from 'react-google-login';
 
-import LogoutButton from '../components/LogoutButton'
+// import LogoutButton from '../components/LogoutButton'
 
 const Container = styled.div`
   width: 100%;
@@ -128,7 +129,12 @@ const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
             <StyledLink to="/subscriptions">Channels</StyledLink>
           </MenuItem>
           <MenuItem>
-            <LogoutButton onLogoutSuccess={handleLogout} /> 
+          <GoogleLogout
+            clientId="860965179748-qcf7gj67it0l2c5f4hc7kvuinojkurkd.apps.googleusercontent.com"
+            buttonText="Logout"
+            onLogoutSuccess={handleLogout}
+          />
+            {/* <LogoutButton onLogoutSuccess={handleLogout} />  */}
           </MenuItem>
         </Menu>
       </Header>
