@@ -1,5 +1,6 @@
 const { ApolloError } = require('apollo-server')
 const User = require('../models/User')
+const {fetchAllSubscriptions} = require('../utils/fetchAllSubscriptions')
 
 module.exports = {
   Query: {
