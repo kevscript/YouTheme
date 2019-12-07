@@ -41,6 +41,7 @@ const Button = styled.button`
 
 const List = styled.ul`
   margin-top: 60px;
+  text-align: center;
 `
 
 
@@ -56,6 +57,7 @@ const SubsPage = ({subscriptions, handleReload}) => {
       </Header>
       <List>
         {subscriptions && subscriptions.map(channel => <SubsListItem  key={channel.id} channel={channel} />)}
+        {!subscriptions && <p>This google account isn't subscribed to any Youtube channel. Subscribe and Reload.</p>}
       </List>
     </Container>
   )
