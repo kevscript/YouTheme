@@ -4,7 +4,7 @@ const { ApolloServer } = require('apollo-server-express')
 const cors = require('cors');
 const path = require('path');
 const mongoose = require('mongoose')
-const uri = 'mongodb+srv://kevscript:kevscript123@cluster0-h7mug.mongodb.net/youtheme?retryWrites=true&w=majority'
+const uri = process.env.MONGODB
 
 const typeDefs = require('./typeDefs')
 const resolvers = require('./resolvers')
