@@ -1,6 +1,9 @@
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
+
   * {
     margin: 0;
     padding: 0;
@@ -12,7 +15,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    @import url('https://fonts.googleapis.com/css?family=Lobster&display=swap');
     font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Segoe UI", "Open Sans", "Oxygen",
       "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
       sans-serif;
@@ -21,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3 {
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
   }
   
   code {
