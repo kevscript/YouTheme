@@ -5,7 +5,7 @@ const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: top;
 `
 
 const ThumbContainer = styled.a`
