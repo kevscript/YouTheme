@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { GoogleLogout } from 'react-google-login';
-
-// import LogoutButton from '../components/LogoutButton'
+import LogoutButton from '../components/LogoutButton'
 
 const Container = styled.div`
   width: 100%;
@@ -131,10 +130,11 @@ const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
           <MenuItem>
           <GoogleLogout
             clientId="860965179748-qcf7gj67it0l2c5f4hc7kvuinojkurkd.apps.googleusercontent.com"
-            buttonText="Logout"
+            render={renderProps => (
+              <LogoutButton handleClick={renderProps.onClick} isDisabled={renderProps.disabled} buttonText="Sign Out" />
+            )}
             onLogoutSuccess={handleLogout}
           />
-            {/* <LogoutButton onLogoutSuccess={handleLogout} />  */}
           </MenuItem>
         </Menu>
       </Header>

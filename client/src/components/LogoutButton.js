@@ -11,19 +11,10 @@ const Button = styled.button`
   cursor: pointer;
 `
 
-const LogoutButton = ({ onLogoutSuccess }) => {
-  const signOut = () => {
-    if (window.gapi) {
-      const auth2 = window.gapi.auth2.getAuthInstance()
-      if (auth2 != null) {
-        auth2.signOut().then(onLogoutSuccess)
-      }
-    }
-  }
-
+const LogoutButton = ({ handleClick, isDisabled, buttonText }) => {
   return (
-    <Button onClick={signOut}>
-      <span>Logout</span>
+    <Button disabled={isDisabled} onClick={handleClick}>
+      <span>{buttonText}</span>
     </Button>
   )
 }
