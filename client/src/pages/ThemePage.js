@@ -70,13 +70,17 @@ const ThemePage = ({ user, themes, location }) => {
         if (channelIds.length > 0) {
           setLoading(true)
           setLoadingMessage('Loading...')
-          const promises = channelIds.map(id => axios.get(`/api/${id}/5`).then(res => res.data))
-          Promise.all(promises)
-            .then(data => {
-              console.log(data)
-              setVideos(data)
-              setLoading(false)
-            })
+          channelIds.map((id, index) => {
+            return axios.get(`/api/${id}/5`)
+              .then(res => {
+                if (index === channelIds.length - 1) {
+                  setVideos(v => [...v, res.data])
+                  setLoading(false)
+                } else {
+                  setVideos(v => [...v, res.data])
+                }
+              })
+          })
         } else {
           setLoadingMessage('No videos in feed yet, edit Theme & select channels')
         }
@@ -97,7 +101,7 @@ const ThemePage = ({ user, themes, location }) => {
       </Header>
       <MainContainer>
         <VideosContainer>
-          {loading
+          {loading && videos.length === 0
             ? <p>{loadingMessage}</p>
             : <VideosGrid>
               {videos && videos.map(channel => {
