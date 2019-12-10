@@ -36,16 +36,6 @@ const InputContainer = styled.div`
   padding: 25px 10px;
 `
 
-const Input = styled.input`
-  padding: 10px;
-  flex: 1;
-  font-size: 15px;
-  height: 40px;
-  border-radius: 3px 0 0 3px;
-  border: 1px solid #0c2461;
-  background: #f1f1f1;
-`
-
 const InputButton = styled.button`
   padding: 10px 20px;
   margin: 0 0 0 10px;

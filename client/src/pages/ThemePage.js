@@ -88,7 +88,7 @@ const ThemePage = ({ user, themes, location }) => {
     } else {
       setLoadingMessage('Error no theme')
     }
-  }, [])
+  }, [themeId, themeName, themes])
 
   return (
     <Container>
