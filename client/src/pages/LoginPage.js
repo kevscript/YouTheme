@@ -1,27 +1,42 @@
 import React from 'react'
 import styled from 'styled-components'
-import LoginButton from '../components/LoginButton'
+import { motion } from "framer-motion"
 import { GoogleLogin } from 'react-google-login';
+import LoginButton from '../components/LoginButton'
 
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
   padding: 20% 0;
+  background: rgb(12,35,87);
+  background: linear-gradient(0deg, rgba(12,35,87,1) 0%, rgba(24,174,138,1) 100%);
+  z-index: -99;
 `
 
-const Title = styled.h1`
+const Title = styled(motion.h1)`
+  position: relative;
   font-family: "Lobster", "Roboto", sans-serif;
-  font-size: 50px;
-  color: #0c2461;
+  font-size: 60px;
+  color: rgba(12,35,87,1);
+
+  :after {
+    content: 'Youtheme';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    color: rgba(24,174,138,1);
+  }
 `
 
-const SubTitle = styled.span`
+const SubTitle = styled(motion.span)`
   font-size: 15px;
+  color: #f1f1f1;
 `
 
 const BtnContainer = styled.div`
@@ -40,11 +55,11 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
     setLoadingMessage('Loading...')
     // await register({ variables: { token: response.tokenId } })
     handleGoogleUser(response)
-    handleAuthUser({ 
-      variables: { 
+    handleAuthUser({
+      variables: {
         idToken: response.tokenId,
         accessToken: response.accessToken
-      } 
+      }
     })
   }
 
@@ -55,26 +70,38 @@ const LoginPage = ({ handleGoogleUser, handleAuthUser, loadingMessage, setLoadin
   return (
     <Container>
       <div>
-        <Title>Youtheme</Title>
-        <SubTitle>Youtube subscriptions sorter.</SubTitle>
+        <Title
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 150, delay: 0.5, ease: "easeOut" }}
+        >
+          Youtheme
+        </Title>
+        <SubTitle
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3, duration: 0.8, ease: "easeOut" }}
+        >
+          Youtube subscriptions sorter
+        </SubTitle>
       </div>
       <BtnContainer>
-      <GoogleLogin
-        clientId={process.env.REACT_APP_CLIENT_ID}
-        render={renderProps => (
-          <LoginButton 
-            handleClick={renderProps.onClick} 
-            isDisabled={renderProps.disabled} 
-            buttonText="Sign In with Google"
-          />
-        )}
-        onSuccess={loginSuccess}
-        onFailure={loginFailure}
-        cookiePolicy={'single_host_origin'}
-        scope={scope}
-        discoveryDocs={discoveryUrl}
-        isSignedIn
-      />
+        <GoogleLogin
+          clientId={process.env.REACT_APP_CLIENT_ID}
+          render={renderProps => (
+            <LoginButton
+              handleClick={renderProps.onClick}
+              isDisabled={renderProps.disabled}
+              buttonText="Sign In with Google"
+            />
+          )}
+          onSuccess={loginSuccess}
+          onFailure={loginFailure}
+          cookiePolicy={'single_host_origin'}
+          scope={scope}
+          discoveryDocs={discoveryUrl}
+          isSignedIn
+        />
       </BtnContainer>
     </Container>
   )
