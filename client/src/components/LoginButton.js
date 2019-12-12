@@ -9,7 +9,7 @@ const Button = styled(motion.button)`
   justify-content: space-between;
   align-items: center;
   border-radius: 10px;
-  border: 2px solid rgba(24,174,138,1);
+  border: 1px solid rgba(255,255,255,1);
   font-size: 18px;
   padding: 18px 25px;
   background: transparent;

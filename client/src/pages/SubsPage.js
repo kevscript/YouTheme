@@ -13,7 +13,7 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 60px;
-  background: #0c2461;
+  background: linear-gradient(90deg, rgba(24,174,138,1) 0%, rgba(12,35,87,1) 100%);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +33,7 @@ const Button = styled.button`
   padding: 8px 15px;
   border-radius: 3px;
   border: 1px solid rgba(255,255,255,0.6);
-  background: #0c2461;
+  background: transparent;
   color: #f1f1f1;
   font-weight: 600;
   cursor: pointer;

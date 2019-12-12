@@ -25,18 +25,21 @@ const Thumb = styled.img`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 3px;
 `
 
 const Title = styled.div`
   margin-top: 5px;
   font-weight: 500;
   font-size: 15px;
+  color: rgba(12,35,87,1);
 `
 
 const ChannelTitle = styled.span`
   font-weight: 400;
   color: #333;
   font-size: 15px;
+  color: rgba(24,174,138,1);
 `
 
 const TextContainer = styled.div`

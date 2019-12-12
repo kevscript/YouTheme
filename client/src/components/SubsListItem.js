@@ -8,8 +8,11 @@ const Item = styled.li`
   align-items: center;
   width: 100%;
   padding: 0 10px;
-  border-top: 1px solid #eee;
   height: 40px;
+
+  :not(:first-child) {
+    border-top: 1px solid rgba(12,35,87,0.6);
+  }
 `
 
 const Name = styled.span`

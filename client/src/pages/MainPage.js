@@ -11,7 +11,7 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 60px;
-  background: #0c2461;
+  background: linear-gradient(90deg, rgba(12,35,87,1) 0%, rgba(24,174,138,1) 100%);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,13 +61,13 @@ const GridItem = styled(Link)`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 1px solid rgba(12, 36, 97, 0.8);
   border-radius: 3px;
   cursor: pointer;
   text-decoration: none;
-  color: rgba(12, 36, 97, 0.8);
+  color: #f1f1f1;
   font-size: 20px;
   font-weight: 600;
+  background: rgba(12,35,87,1);
 
   h3 {
     font-family: -apple-system,BlinkMacSystemFont,"Roboto","Segoe UI","Open Sans","Oxygen", "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue", sans-serif;
@@ -80,6 +80,10 @@ const GridItem = styled(Link)`
     font-size: 12px;
     font-weight: 400;
   }
+
+  :hover {
+
+  }
 `
 
 const InputContainer = styled.div`
@@ -90,7 +94,7 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background: white;
+  background: linear-gradient(90deg, rgba(12,35,87,1) 0%, rgba(24,174,138,1) 100%);
 `
 
 const Input = styled.input`
@@ -99,7 +103,7 @@ const Input = styled.input`
   font-size: 15px;
   height: 40px;
   border-radius: 3px 0 0 3px;
-  border: 1px solid #0c2461;
+  border: 1px solid rgba(24,174,138,1);
   background: #f1f1f1;
   z-index: 99;
 `
@@ -110,7 +114,7 @@ const InputButton = styled.button`
   background: #0c2461;
   height: 40px;
   color: #f1f1f1;
-  border: 1px solid #0c2461;
+  border: 1px solid rgba(12,35,87,1);
   border-radius: 0 3px 3px 0;
   font-weight: 500;
 `
