@@ -28,7 +28,7 @@ module.exports = {
   Mutation: {
     createTheme: async (_, { id, themeName }) => {
       try {
-        const newTheme = { name: themeName, id: Date.now().toString() }
+        const newTheme = { name: themeName, id: Date.now().toString(), channels: [] }
         await User.updateOne({ id: id }, { $push: { themes: newTheme } })
         return newTheme
       } catch (e) { throw new ApolloError(e.message) }

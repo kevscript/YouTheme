@@ -66,10 +66,10 @@ const ThemePage = ({ user, themes, location }) => {
       try {
         const activeThemeIndex = themes.findIndex(t => t.id === themeId)
         const activeTheme = themes[activeThemeIndex]
-        const channelIds = activeTheme.channels.map(c => c.channelId)
-        if (channelIds.length > 0) {
+        if (activeTheme.channels.length > 0) {
           setLoading(true)
           setLoadingMessage('Loading...')
+          const channelIds = activeTheme.channels.map(c => c.channelId)
           channelIds.map((id, index) => {
             return axios.get(`/api/${id}/5`)
               .then(res => {
