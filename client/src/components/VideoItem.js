@@ -60,9 +60,6 @@ const VideoItem = ({ item }) => {
   return (
     <ItemContainer>
       <ThumbContainer 
-        // href={`https://www.youtube.com/watch?v=${item.id.videoId ? item.id.videoId : item.id.playlistId}`}
-        // target="_blank"
-        // rel="noopener noreferrer"
         onClick={() => setOpenVideo(true)}
       >
         <Thumb src={item.snippet.thumbnails.medium.url} />
