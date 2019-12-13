@@ -68,6 +68,7 @@ const GridItem = styled(Link)`
   font-size: 20px;
   font-weight: 600;
   background: rgba(12,35,87,1);
+  transition: all 0.3s ease-out;
 
   h3 {
     font-family: -apple-system,BlinkMacSystemFont,"Roboto","Segoe UI","Open Sans","Oxygen", "Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue", sans-serif;
@@ -82,7 +83,8 @@ const GridItem = styled(Link)`
   }
 
   :hover {
-
+    background: rgba(24,174,138,1);
+    transition: all 0.3s ease-out;
   }
 `
 
