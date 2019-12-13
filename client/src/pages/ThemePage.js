@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Link, useParams } from 'react-router-dom'
-import axios from 'axios'
-
+import useFetchVideos from '../hooks/useFetchVideos'
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
 import VideoItem from '../components/VideoItem'
@@ -26,6 +25,7 @@ const Header = styled.div`
 const MainContainer = styled.div`
   width: 100%;
   margin: 60px auto 0;
+  text-align: center;
 `
 
 const PageName = styled.h3`
@@ -53,42 +53,31 @@ const VideosGrid = styled.div`
   grid-gap: 30px;
 `
 
+const ErrorMessage = styled.p`
+  margin: 80px 0;
+  font-size: 15px;
+  color: rgba(12,35,87,1);
+`
+
+const LoadingMessage = styled.p`
+  margin: 80px 0;
+  font-size: 15px;
+  color: rgba(24,174,138,1);
+`
+
 const ThemePage = ({ themes, location }) => {
   const { themeId } = useParams()
   const { themeName } = location.state
-
-  const [videos, setVideos] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [loadingMessage, setLoadingMessage] = useState('')
-
-  useEffect(() => {
-    if (themeId) {
-      try {
-        const activeThemeIndex = themes.findIndex(t => t.id === themeId)
-        const activeTheme = themes[activeThemeIndex]
-        if (activeTheme.channels.length > 0) {
-          setLoading(true)
-          setLoadingMessage('Loading...')
-          const channelIds = activeTheme.channels.map(c => c.channelId)
-          channelIds.map((id, index) => {
-            return axios.get(`/api/${id}/5`)
-              .then(res => {
-                if (index === channelIds.length - 1) {
-                  setVideos(v => [...v, res.data])
-                  setLoading(false)
-                } else {
-                  setVideos(v => [...v, res.data])
-                }
-              })
-          })
-        } else {
-          setLoadingMessage('No videos in feed yet, edit Theme & select channels')
-        }
-      } catch (err) { console.log(err) }
+  const { data, isLoading, error } = useFetchVideos(themes, themeId, 5)
+  const sortVideos = (channels) => {
+    let arr = []
+    if (channels) {
+      channels.map(chan => arr = [...arr, ...chan.items])
+      return arr.sort((a, b) => a.snippet.publishedAt < b.snippet.publishedAt ? 1 : -1)
     } else {
-      setLoadingMessage('Error no theme')
+      return arr
     }
-  }, [themeId, themeName, themes])
+  }
 
   return (
     <Container>
@@ -100,17 +89,14 @@ const ThemePage = ({ themes, location }) => {
         <StyledLink to={{ pathname: `/edit/${themeId}`, state: { themeName: themeName } }}>Edit</StyledLink>
       </Header>
       <MainContainer>
+        { error && <ErrorMessage>{error}</ErrorMessage> }
+        { isLoading && !data && <LoadingMessage>Loading...</LoadingMessage> }
         <VideosContainer>
-          {loading && videos.length === 0
-            ? <p>{loadingMessage}</p>
-            : <VideosGrid>
-              {videos && videos.map(channel => {
-                return channel.items.map(item =>
-                  <VideoItem key={item.id.videoId} item={item} />
-                )
-              })}
-            </VideosGrid>
-          }
+            { data && data.length > 0 && !error &&
+              <VideosGrid>
+                {sortVideos(data).map(vid => <VideoItem key={vid.id.videoId} item={vid} />)}
+              </VideosGrid>            
+            }
         </VideosContainer>
       </MainContainer>
     </Container>
