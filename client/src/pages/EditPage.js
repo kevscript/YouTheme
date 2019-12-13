@@ -146,7 +146,7 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteThem
         </InputContainer>
         <div>
           {themes[activeThemeIndex].channels && themes[activeThemeIndex].channels.map(channel => 
-            <ChannelListItem key={channel.id} channel={channel} handleRemove={handleRemove} />
+            <ChannelListItem key={channel.channelId} channel={channel} handleRemove={handleRemove} />
           )}
         </div>
       </MainContainer>
