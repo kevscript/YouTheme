@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types';
 import { motion } from "framer-motion"
 import Icon from './Icon'
 import GoogleIcon from '../assets/google.svg'
@@ -32,18 +33,25 @@ const Button = styled(motion.button)`
   }
 `
 
-const LoginButton = ({handleClick, isDisabled, buttonText}) => {
+const LoginButton = ({ handleClick = null, isDisabled = null, buttonText = 'Login' }) => {
   return (
-    <Button 
-      onClick={handleClick} 
+    <Button
+      onClick={handleClick}
       disabled={isDisabled}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      data-testid="button"
     >
       <span>{buttonText}</span>
-      <Icon icon={GoogleIcon} width='18px' height='18px' />
+      <Icon icon={GoogleIcon} name="google icon" width='18px' height='18px' />
     </Button>
   )
+}
+
+LoginButton.propTypes = {
+  handleClick: PropTypes.func,
+  isDisabled: PropTypes.bool,
+  buttonText: PropTypes.string
 }
 
 export default LoginButton
