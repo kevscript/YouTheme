@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import Icon from './Icon'
 import DeleteIcon from '../assets/delete.svg'
 
@@ -27,13 +28,18 @@ const Button = styled.button`
 
 const ChannelListItem = ({ channel, handleRemove }) => {
   return (
-    <Item>
+    <Item data-testid="item-container">
       <ChannelName>{channel.channelName}</ChannelName>
       <Button data-id={channel.channelId} onClick={handleRemove}>
-        <Icon icon={DeleteIcon} width="10px" height="10px" />
+        <Icon icon={DeleteIcon} width="10px" height="10px" name="delete icon" />
       </Button>
     </Item>
   )
+}
+
+ChannelListItem.propTypes = {
+  channel: PropTypes.object.isRequired,
+  handleRemove: PropTypes.func.isRequired
 }
 
 export default ChannelListItem
