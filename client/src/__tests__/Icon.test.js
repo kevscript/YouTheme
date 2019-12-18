@@ -31,7 +31,11 @@ describe('The Icon component', () => {
   })
 
   test('should use default styling values without styling props', () => {
-    const { queryByTestId } = render(<Icon />)
+    const props = {
+      icon: GoogleIcon,
+      name: 'its a google Icon'
+    }
+    const { queryByTestId } = render(<Icon {...props} />)
 
     expect(queryByTestId('icon-container')).toBeInTheDocument()
     expect(queryByTestId('icon-container')).toHaveStyle(`width: 15px`)
