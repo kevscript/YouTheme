@@ -6,7 +6,7 @@ import GoogleIcon from '../assets/google.svg'
 
 describe('The Icon component', () => {
 
-  test('should render correctly based on props', () => {
+  test('it renders correctly based on props', () => {
     const props = {
       handleOnClick: jest.fn(),
       width: '20px',
@@ -30,7 +30,7 @@ describe('The Icon component', () => {
 
   })
 
-  test('should use default styling values without styling props', () => {
+  test('it uses default styling values without styling props', () => {
     const props = {
       icon: GoogleIcon,
       name: 'its a google Icon'
