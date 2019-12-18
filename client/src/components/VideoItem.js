@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import VideoPlayer from './VideoPlayer'
 
@@ -30,9 +31,12 @@ const Thumb = styled.img`
 
 const Title = styled.div`
   margin-top: 5px;
-  font-weight: 500;
+`
+
+const VideoTitle = styled.span`
   font-size: 15px;
   color: rgba(12,35,87,1);
+  font-weight: 500;
 `
 
 const ChannelTitle = styled.span`
@@ -58,16 +62,18 @@ const VideoItem = ({ item }) => {
   }
 
   return (
-    <ItemContainer>
+    <ItemContainer data-testid="item-container">
       <ThumbContainer 
+        data-testid="thumb-container"
         onClick={() => setOpenVideo(true)}
       >
-        <Thumb src={item.snippet.thumbnails.medium.url} />
+        <Thumb src={item.snippet.thumbnails.medium.url} data-testid="thumb-image"/>
       </ThumbContainer>
       <TextContainer onClick={() => setOpenVideo(true)}>
         <Title>
-          {item.snippet.title} 
-          <ChannelTitle> - {item.snippet.channelTitle}</ChannelTitle>
+          <VideoTitle>{item.snippet.title}</VideoTitle> 
+          - 
+          <ChannelTitle>{item.snippet.channelTitle}</ChannelTitle>
         </Title>
       </TextContainer>
       { openVideo && 
@@ -75,10 +81,15 @@ const VideoItem = ({ item }) => {
           id={item.id.videoId}
           videoRef={videoRef} 
           handleVideo={handleVideo} 
+          data-testid="item-player"
         />
       }
     </ItemContainer>
   )
+}
+
+VideoItem.propTypes = {
+  item: PropTypes.object.isRequired
 }
 
 export default VideoItem
