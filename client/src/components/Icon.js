@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types';
+
 
 const IconContainer = styled.div`
   cursor: pointer;
@@ -22,18 +24,27 @@ const Img = styled.img`
   height: 100%;
 `
 
-const Icon = ({ handleOnClick, icon, name, width, height, circle }) => {
+const Icon = ({ handleOnClick = null, icon, name, width, height, circle }) => {
   return (
-    <IconContainer 
-      onClick={handleOnClick} 
-      width={width} 
-      height={height} 
+    <IconContainer
+      onClick={handleOnClick}
+      width={width}
+      height={height}
       circle={circle}
       data-testid='icon-container'
     >
-      <Img src={icon} alt={name}  data-testid='icon-image'/>
+      <Img src={icon} alt={name} data-testid='icon-image' />
     </IconContainer>
   )
+}
+
+Icon.propTypes = {
+  handleOnClick: PropTypes.func,
+  icon: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  width: PropTypes.string,
+  height: PropTypes.string,
+  circle: PropTypes.bool
 }
 
 export default Icon
