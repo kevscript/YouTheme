@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import Icon from './Icon'
 
@@ -27,10 +28,15 @@ const SubsListItem = ({ channel }) => {
         width='30px'
         height='30px'
         circle
+        name="channel logo"
       />
       <Name>{channel.snippet.title}</Name>
     </Item>
   )
+}
+
+SubsListItem.propTypes = {
+  channel: PropTypes.object.isRequired
 }
 
 export default SubsListItem
