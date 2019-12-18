@@ -24,8 +24,14 @@ const Img = styled.img`
 
 const Icon = ({ handleOnClick, icon, name, width, height, circle }) => {
   return (
-    <IconContainer onClick={handleOnClick} width={width} height={height} circle={circle}>
-      <Img src={icon} alt={name} />
+    <IconContainer 
+      onClick={handleOnClick} 
+      width={width} 
+      height={height} 
+      circle={circle}
+      data-testid='icon-container'
+    >
+      <Img src={icon} alt={name}  data-testid='icon-image'/>
     </IconContainer>
   )
 }
