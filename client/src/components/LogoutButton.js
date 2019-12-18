@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 const Button = styled.button`
   padding: 8px 15px;
@@ -19,12 +20,22 @@ const Button = styled.button`
   }
 `
 
-const LogoutButton = ({ handleClick, isDisabled, buttonText }) => {
+const LogoutButton = ({ handleClick = null, isDisabled = null, buttonText = 'Logout' }) => {
   return (
-    <Button disabled={isDisabled} onClick={handleClick}>
+    <Button 
+      disabled={isDisabled} 
+      onClick={handleClick}
+      data-testid="button"
+    >
       <span>{buttonText}</span>
     </Button>
   )
+}
+
+LogoutButton.propTypes = {
+  handleClick: PropTypes.func,
+  isDisabled: PropTypes.bool,
+  buttonText: PropTypes.string
 }
 
 export default LogoutButton
