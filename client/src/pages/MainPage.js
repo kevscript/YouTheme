@@ -117,7 +117,7 @@ const MainPage = ({ handleLogout, themes, handleThemeCreation }) => {
           </MenuItem>
           <MenuItem>
             <GoogleLogout
-              clientId="860965179748-qcf7gj67it0l2c5f4hc7kvuinojkurkd.apps.googleusercontent.com"
+              clientId={process.env.REACT_APP_CLIENT_ID}
               render={renderProps => (
                 <LogoutButton 
                   handleClick={renderProps.onClick} 
