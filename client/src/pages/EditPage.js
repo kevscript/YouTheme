@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link, useParams } from 'react-router-dom'
-import Select from 'react-select'
 
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
+import ChannelList from '../components/ChannelList'
 import ChannelListItem from '../components/ChannelListItem'
+import ChannelSelector from '../components/ChannelSelector'
 
 const Container = styled.div`
   width: 100%;
@@ -28,24 +29,12 @@ const PageName = styled.h3`
   color: #f1f1f1;
 `
 
-const InputContainer = styled.div`
+const SelectorContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 25px 10px;
-`
-
-const InputButton = styled.button`
-  padding: 10px 20px;
-  margin: 0 0 0 10px;
-  font-size: 15px;
-  background: #0c2461;
-  height: 40px;
-  color: #f1f1f1;
-  font-weight: 500;
-  border: 0;
-  border-radius: 5px;
 `
 
 const MainContainer = styled.div`
@@ -63,92 +52,101 @@ const Button = styled(Link)`
   text-decoration: none;
 `
 
-const StyledSelect = styled(Select)`
-  flex: 1; 
-`
-
 const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteTheme, user, location }) => {
+  // active theme Id from params
   const { themeId } = useParams()
+
+  // active theme name from route state
   const { themeName } = location.state
-  const [channelInput, setChannelInput] = useState('')
-  const activeThemeIndex = themes.findIndex(t => t.id === themeId) 
 
-  const filteredChannels = () => {
-    return subscriptions.filter(x => x.snippet.title.toLowerCase().includes(channelInput.toLowerCase()))
+  // object { value, label } (user input)
+  const [selectedChannel, setSelectedChannel] = useState('')
+
+  // index of active theme
+  const activeThemeIndex = themes.findIndex(t => t.id === themeId)
+
+  // selector options
+  const options = subscriptions.map(x => {
+    return { value: x.snippet.resourceId.channelId, label: x.snippet.title }
+  })
+
+  // check if the selectedChannel exists in active theme
+  const isValidInput = () => {
+    const exists = subscriptions.find(c => c.snippet.resourceId.channelId === selectedChannel.value)
+    return exists ? true : false
   }
 
-  const handleChange = (e) => {
-    console.log(e.value)
-    setChannelInput(e.value)
-  } 
-
-  const handleThemeDelete = () => {
-    deleteTheme({ variables: {
-      id: user.id,
-      themeId: themeId
-    }})
-  }
-
-  const handleAdd = () => {
-    if (channelInput) {
-      const channel = subscriptions.find(c => c.snippet.resourceId.channelId === channelInput)
-      if (channel) {
-        addChannel({ variables: {
-          id: user.id,
-          themeId: themeId,
-          channelId: channel.snippet.resourceId.channelId,
-          channelName: channel.snippet.title
-        }})
-        setChannelInput('')
-      }
+  // user input handler
+  const handleChange = (channel) => {
+    if (channel === null) {
+      setSelectedChannel('')
+    } else {
+      setSelectedChannel(channel)
     }
   }
 
+  // deleting active theme from DB
+  const handleThemeDelete = () => {
+    deleteTheme({
+      variables: {
+        id: user.id,
+        themeId: themeId
+      }
+    })
+  }
+
+  // adding selected channel to active theme in DB
+  const handleAdd = () => {
+    if (selectedChannel.value && isValidInput()) {
+      const chan = subscriptions.find(c => c.snippet.resourceId.channelId === selectedChannel.value)
+      addChannel({
+        variables: {
+          id: user.id,
+          themeId: themeId,
+          channelId: chan.snippet.resourceId.channelId,
+          channelName: chan.snippet.title
+        }
+      })
+      setSelectedChannel('')
+    }
+  }
+
+  // remove current target channel from active theme in DB
   const handleRemove = (e) => {
     const chanId = e.currentTarget.getAttribute('data-id')
-    removeChannel({ variables: {
-      id: user.id,
-      themeId: themeId,
-      channelId: chanId
-    }})
+    removeChannel({
+      variables: {
+        id: user.id,
+        themeId: themeId,
+        channelId: chanId
+      }
+    })
   }
 
   return (
     <Container>
       <Header>
-      <Link to={{ pathname: `/theme/${themeId}`, state: {themeName: themeName} }}>
-        <Icon icon={LeftIcon} name='back to menu arrow' />
-      </Link>
-      <PageName>Editing: {themeName}</PageName>
-      <Button onClick={handleThemeDelete} to="/">Delete</Button>
+        <Link to={{ pathname: `/theme/${themeId}`, state: { themeName: themeName } }}>
+          <Icon icon={LeftIcon} name='back to menu arrow' />
+        </Link>
+        <PageName>Editing: {themeName.toUpperCase()}</PageName>
+        <Button onClick={handleThemeDelete} to="/">Delete</Button>
       </Header>
       <MainContainer>
-        <InputContainer>
-          {/* <Input 
-            type="text" 
-            list="selected-channel"
-            onChange={handleChange} 
-            value={channelInput} 
-            placeholder='Find channel'
-          /> */}
-          <StyledSelect 
-            options={subscriptions.map(x => {
-              return { value: x.snippet.resourceId.channelId, label: x.snippet.title }
-            })} 
-            onChange={handleChange}
+        <SelectorContainer>
+          <ChannelSelector
+            options={options}
+            handleChange={handleChange}
+            handleAdd={handleAdd}
+            isValidInput={isValidInput}
           />
-          <InputButton onClick={handleAdd}>Add</InputButton>
-          <datalist id="selected-channel">
-            {filteredChannels().map(channel => 
-              <option key={`option-${channel.id}`} value={channel.snippet.title} data-id={channel.id} />
-            )}
-          </datalist>
-        </InputContainer>
-        <div>
-          {themes[activeThemeIndex].channels && themes[activeThemeIndex].channels.map(channel => 
-            <ChannelListItem key={channel.channelId} channel={channel} handleRemove={handleRemove} />
-          )}
-        </div>
+        </SelectorContainer>
+        {themes[activeThemeIndex].channels &&
+          <ChannelList
+            channels={themes[activeThemeIndex].channels}
+            handleRemove={handleRemove}
+          />
+        }
       </MainContainer>
     </Container>
   )
