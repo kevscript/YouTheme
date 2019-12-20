@@ -85,7 +85,7 @@ const ThemePage = ({ themes, location }) => {
         <Link to="/">
           <Icon icon={LeftIcon} name='back to menu arrow' />
         </Link>
-        <PageName>{themeName}</PageName>
+        <PageName>{themeName.toUpperCase()}</PageName>
         <StyledLink to={{ pathname: `/edit/${themeId}`, state: { themeName: themeName } }}>Edit</StyledLink>
       </Header>
       <MainContainer>
