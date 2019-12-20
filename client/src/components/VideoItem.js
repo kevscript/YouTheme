@@ -63,24 +63,24 @@ const VideoItem = ({ item }) => {
 
   return (
     <ItemContainer data-testid="item-container">
-      <ThumbContainer 
+      <ThumbContainer
         data-testid="thumb-container"
         onClick={() => setOpenVideo(true)}
       >
-        <Thumb src={item.snippet.thumbnails.medium.url} data-testid="thumb-image"/>
+        <Thumb src={item.snippet.thumbnails.medium.url} data-testid="thumb-image" />
       </ThumbContainer>
       <TextContainer onClick={() => setOpenVideo(true)}>
         <Title>
-          <VideoTitle>{item.snippet.title}</VideoTitle> 
-          - 
+          <VideoTitle>{item.snippet.title}</VideoTitle>
+          <span> -</span>
           <ChannelTitle>{item.snippet.channelTitle}</ChannelTitle>
         </Title>
       </TextContainer>
-      { openVideo && 
-        <VideoPlayer 
+      {openVideo &&
+        <VideoPlayer
           id={item.id.videoId}
-          videoRef={videoRef} 
-          handleVideo={handleVideo} 
+          videoRef={videoRef}
+          handleVideo={handleVideo}
           data-testid="item-player"
         />
       }
