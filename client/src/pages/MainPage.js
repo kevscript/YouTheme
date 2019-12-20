@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { GoogleLogout } from 'react-google-login';
 import LogoutButton from '../components/LogoutButton'
+import ThemeItem from '../components/ThemeItem'
+import ThemeInput from '../components/ThemeInput'
 
 const Container = styled.div`
   width: 100%;
@@ -99,31 +101,11 @@ const InputContainer = styled.div`
   background: linear-gradient(90deg, rgba(12,35,87,1) 0%, rgba(24,174,138,1) 100%);
 `
 
-const Input = styled.input`
-  padding: 10px;
-  flex: 1;
-  font-size: 15px;
-  height: 40px;
-  border-radius: 3px 0 0 3px;
-  border: 1px solid rgba(24,174,138,1);
-  background: #f1f1f1;
-  z-index: 99;
-`
-
-const InputButton = styled.button`
-  padding: 10px 20px;
-  font-size: 15px;
-  background: #0c2461;
-  height: 40px;
-  color: #f1f1f1;
-  border: 1px solid rgba(12,35,87,1);
-  border-radius: 0 3px 3px 0;
-  font-weight: 500;
-`
-
-const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
+const MainPage = ({ handleLogout, themes, handleThemeCreation }) => {
 
   const [themeInput, setThemeInput] = useState('')
+
+  const handleInput = (input) => setThemeInput(input)
 
   return (
     <Container>
@@ -134,29 +116,38 @@ const MainPage = ({handleLogout, themes, handleThemeCreation}) => {
             <StyledLink to="/subscriptions">Channels</StyledLink>
           </MenuItem>
           <MenuItem>
-          <GoogleLogout
-            clientId="860965179748-qcf7gj67it0l2c5f4hc7kvuinojkurkd.apps.googleusercontent.com"
-            render={renderProps => (
-              <LogoutButton handleClick={renderProps.onClick} isDisabled={renderProps.disabled} buttonText="Sign Out" />
-            )}
-            onLogoutSuccess={handleLogout}
-          />
+            <GoogleLogout
+              clientId="860965179748-qcf7gj67it0l2c5f4hc7kvuinojkurkd.apps.googleusercontent.com"
+              render={renderProps => (
+                <LogoutButton 
+                  handleClick={renderProps.onClick} 
+                  isDisabled={renderProps.disabled} 
+                  buttonText="Sign Out"
+                />
+              )}
+              onLogoutSuccess={handleLogout}
+            />
           </MenuItem>
         </Menu>
       </Header>
       <MainContainer>
         <ThemesGrid>
-          {themes && themes.map(theme => 
-            <GridItem to={{ pathname: `/theme/${theme.id}`, state: {themeName: theme.name} }} key={theme.id}>
-              <h3>{theme.name}</h3>
-              <span>channels: {theme.channels ? theme.channels.length : 0}</span>
+          {themes && themes.map(theme =>
+            <GridItem 
+              key={theme.id}
+              to={{ pathname: `/theme/${theme.id}`, state: { themeName: theme.name } }}
+            >
+              <ThemeItem theme={theme} />
             </GridItem>
           )}
         </ThemesGrid>
       </MainContainer>
       <InputContainer>
-        <Input type="text" value={themeInput} onChange={e => setThemeInput(e.target.value)} placeholder="New Theme Name"/>
-        <InputButton onClick={() => handleThemeCreation(themeInput)}>Create</InputButton>
+        <ThemeInput 
+          themeInput={themeInput}
+          handleInput={handleInput}
+          handleThemeCreation={handleThemeCreation}
+        />
       </InputContainer>
     </Container>
   )
