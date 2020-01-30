@@ -5,8 +5,9 @@ import { Link, useParams } from 'react-router-dom'
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
 import ChannelList from '../components/ChannelList'
-import ChannelListItem from '../components/ChannelListItem'
+// import ChannelListItem from '../components/ChannelListItem'
 import ChannelSelector from '../components/ChannelSelector'
+import HintBox from '../components/HintBox'
 
 const Container = styled.div`
   width: 100%;
@@ -66,13 +67,18 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteThem
   const activeThemeIndex = themes.findIndex(t => t.id === themeId)
 
   // selector options
-  const options = subscriptions.map(x => {
-    return { value: x.snippet.resourceId.channelId, label: x.snippet.title }
-  })
+  const setOptions = () => {
+    return subscriptions 
+      ? subscriptions.map(x => {
+          return { value: x.snippet.resourceId.channelId, label: x.snippet.title }
+        })
+      : []
+  }
+  const options = setOptions()
 
   // check if the selectedChannel exists in active theme
   const isValidInput = () => {
-    const exists = subscriptions.find(c => c.snippet.resourceId.channelId === selectedChannel.value)
+    const exists = options.find(c => c.value === selectedChannel.value)
     return exists ? true : false
   }
 
@@ -133,19 +139,26 @@ const EditPage = ({ subscriptions, themes, addChannel, removeChannel, deleteThem
         <Button onClick={handleThemeDelete} to="/">Delete</Button>
       </Header>
       <MainContainer>
-        <SelectorContainer>
-          <ChannelSelector
-            options={options}
-            handleChange={handleChange}
-            handleAdd={handleAdd}
-            isValidInput={isValidInput}
-          />
-        </SelectorContainer>
-        {themes[activeThemeIndex].channels &&
-          <ChannelList
-            channels={themes[activeThemeIndex].channels}
-            handleRemove={handleRemove}
-          />
+        { 
+          options && options.length > 0
+            ? <SelectorContainer>
+                <ChannelSelector
+                  options={options}
+                  handleChange={handleChange}
+                  handleAdd={handleAdd}
+                  isValidInput={isValidInput}
+                /> 
+              </SelectorContainer>
+            : <HintBox>
+                <p>It seems you're not subscribed to any Youtube channel on this account.</p>
+              </HintBox>
+        }
+        {
+          themes[activeThemeIndex].channels &&
+            <ChannelList
+              channels={themes[activeThemeIndex].channels}
+              handleRemove={handleRemove}
+            />
         }
       </MainContainer>
     </Container>
