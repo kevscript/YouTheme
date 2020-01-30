@@ -24,11 +24,11 @@ export default (themes, themeId, maxRes = 5) => {
       const activeThemeIndex = themes.findIndex(t => t.id === themeId)
   
       if (activeThemeIndex === -1) {
-        setError('Error: Theme with this id does not exist')
+        setError('Error: Theme with this id does not exist.')
       } else {
         const activeTheme = themes[activeThemeIndex]
         if (activeTheme.channels.length === 0) {
-          setError('No videos in feed yet, edit Theme & select channels')
+          setError('No videos in feed yet, edit it.')
         } else {
           const channelIds = activeTheme.channels.map(c => c.channelId)
           channelIds.map((id) => fetchVideos(id))
