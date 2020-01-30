@@ -54,12 +54,6 @@ const VideosGrid = styled.div`
   grid-gap: 30px;
 `
 
-const ErrorMessage = styled.p`
-  margin: 80px 0;
-  font-size: 15px;
-  color: rgba(12,35,87,1);
-`
-
 const LoadingMessage = styled.p`
   margin: 80px 0;
   font-size: 15px;
@@ -70,6 +64,7 @@ const ThemePage = ({ themes, location }) => {
   const { themeId } = useParams()
   const { themeName } = location.state
   const { data, isLoading, error } = useFetchVideos(themes, themeId, 5)
+  
   const sortVideos = (channels) => {
     let arr = []
     if (channels) {
