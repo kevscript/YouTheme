@@ -5,6 +5,7 @@ import useFetchVideos from '../hooks/useFetchVideos'
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
 import VideoItem from '../components/VideoItem'
+import HintBox from '../components/HintBox'
 
 const Container = styled.div`
   width: 100%;
@@ -89,7 +90,7 @@ const ThemePage = ({ themes, location }) => {
         <StyledLink to={{ pathname: `/edit/${themeId}`, state: { themeName: themeName } }}>Edit</StyledLink>
       </Header>
       <MainContainer>
-        { error && <ErrorMessage>{error}</ErrorMessage> }
+        { error && <HintBox><p>{error}</p></HintBox> }
         { isLoading && !data && <LoadingMessage>Loading...</LoadingMessage> }
         <VideosContainer>
             { data && data.length > 0 && !error &&

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import LeftIcon from '../assets/arrow-left.svg'
 import Icon from '../components/Icon'
 import SubsListItem from '../components/SubsListItem'
+import HintBox from '../components/HintBox'
 
 const Container = styled.div`
   width: 100%;
@@ -56,8 +57,11 @@ const SubsPage = ({subscriptions, handleReload}) => {
         <Button onClick={handleReload}>Reload</Button>
       </Header>
       <List>
-        {subscriptions && subscriptions.map(channel => <SubsListItem  key={channel.id} channel={channel} />)}
-        {!subscriptions && <p>This google account isn't subscribed to any Youtube channel. Subscribe and Reload.</p>}
+        {
+          subscriptions 
+            ? subscriptions.map(channel => <SubsListItem  key={channel.id} channel={channel} />)
+            : <HintBox><p>This google account isn't subscribed to any Youtube channel. Subscribe and Reload.</p></HintBox>
+        }
       </List>
     </Container>
   )
